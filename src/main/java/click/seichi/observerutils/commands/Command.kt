@@ -1,4 +1,4 @@
-package click.seichi.observerutils
+package click.seichi.observerutils.commands
 
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
@@ -11,7 +11,9 @@ object Command : TabExecutor {
         alias: String?,
         args: Array<out String>?
     ): MutableList<String> {
-        TODO("Not yet implemented")
+        return if (args?.size == 1) {
+            SubCommands.values().map { it.name.lowercase() }.toMutableList()
+        } else mutableListOf()
     }
 
     override fun onCommand(
