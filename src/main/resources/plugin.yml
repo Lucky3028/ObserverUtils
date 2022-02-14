@@ -1,0 +1,14 @@
+name: ObserverUtils
+version: '${version}'
+main: click.seichi.observerutils.ObserverUtils
+commands:
+  obs:
+    description: "This is a command for observers."
+    usage: "See /obs help."
+    aliases:
+      - observer
+    permission: observerutils.obs
+    permission-message: "You don't have permission to use this command."
+permissions:
+  observerutils.obs:
+    default: op
