@@ -11,7 +11,7 @@ class ObserverUtils : JavaPlugin() {
 
     override fun onEnable() {
         PLUGIN = this
-        getCommand("obs").executor = Command
+        getCommand("obs").executor = Command.executor()
     }
 
     override fun onDisable() {

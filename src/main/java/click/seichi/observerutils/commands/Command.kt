@@ -1,27 +1,43 @@
 package click.seichi.observerutils.commands
 
-import org.bukkit.command.Command
-import org.bukkit.command.CommandSender
-import org.bukkit.command.TabExecutor
+import click.seichi.observerutils.contextualexecutor.BranchedExecutor
+import click.seichi.observerutils.contextualexecutor.ContextualExecutor
+import click.seichi.observerutils.contextualexecutor.RawCommandContext
+import click.seichi.observerutils.contextualexecutor.asTabExecutor
+import com.github.michaelbull.result.Result
 
-object Command : TabExecutor {
-    override fun onTabComplete(
-        sender: CommandSender?,
-        command: Command?,
-        alias: String?,
-        args: Array<out String>?
-    ): MutableList<String> {
-        return if (args?.size == 1) {
-            SubCommands.values().map { it.name.lowercase() }.toMutableList()
-        } else mutableListOf()
-    }
+object Command {
+    fun executor() = BranchedExecutor(
+        mapOf(
+            "region" to Commands.REGION.executor(),
+            "fix" to Commands.FIX.executor()
+        ), Commands.HELP.executor(), Commands.HELP.executor()
+    ).asTabExecutor()
+}
 
-    override fun onCommand(
-        sender: CommandSender?,
-        command: Command?,
-        label: String?,
-        args: Array<out String>?
-    ): Boolean {
-        TODO("Not yet implemented")
-    }
+enum class Commands {
+    REGION {
+        override fun executor(): ContextualExecutor = BranchedExecutor(
+            mapOf(
+                "fix" to FIX.executor(),
+                "help" to HELP.executor()
+            )
+        )
+    },
+    FIX {
+        override fun executor() = object: ContextualExecutor {
+            override fun executeWith(context: RawCommandContext): Result<Any, Throwable> {
+                TODO("Not yet implemented: fix")
+            }
+        }
+    },
+    HELP {
+        override fun executor() = object: ContextualExecutor {
+            override fun executeWith(context: RawCommandContext): Result<Any, Throwable> {
+                TODO("Not yet implemented: help")
+            }
+        }
+    };
+
+    abstract fun executor(): ContextualExecutor
 }
