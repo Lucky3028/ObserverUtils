@@ -18,9 +18,15 @@ repositories {
     }
 }
 
+configurations {
+    embed
+    implementation.extendsFrom(embed)
+}
+
 dependencies {
     compileOnly 'org.spigotmc:spigot-api:1.12.2-R0.1-SNAPSHOT'
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    embed "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    embed "com.michael-bull.kotlin-result:kotlin-result:1.1.14"
 }
 
 def targetJavaVersion = 8
@@ -56,4 +62,9 @@ compileTestKotlin {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+}
+
+jar {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    from configurations.embed.collect { it.isDirectory() ? it : zipTree(it) }
 }
