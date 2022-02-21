@@ -1,10 +1,11 @@
 package click.seichi.observerutils.commands
 
+import arrow.core.Either
+import click.seichi.observerutils.contextualexecutor.Effect
 import click.seichi.observerutils.contextualexecutor.BranchedExecutor
 import click.seichi.observerutils.contextualexecutor.ContextualExecutor
-import click.seichi.observerutils.contextualexecutor.RawCommandContext
 import click.seichi.observerutils.contextualexecutor.asTabExecutor
-import com.github.michaelbull.result.Result
+import org.bukkit.Bukkit
 
 object Command {
     fun executor() = BranchedExecutor(
@@ -25,18 +26,16 @@ enum class Commands {
         )
     },
     FIX {
-        override fun executor() = object: ContextualExecutor {
-            override fun executeWith(context: RawCommandContext): Result<Any, Throwable> {
-                TODO("Not yet implemented: fix")
-            }
-        }
+        override fun executor() = CommandBuilder.beginConfiguration().execution {
+            Either.Right(Effect.MessageEffect(listOf(it.command.command.name, it.args.toString())))
+        }.build()
     },
     HELP {
-        override fun executor() = object: ContextualExecutor {
-            override fun executeWith(context: RawCommandContext): Result<Any, Throwable> {
-                TODO("Not yet implemented: help")
-            }
-        }
+        override fun executor() = CommandBuilder.beginConfiguration().execution {
+            Bukkit.getServer().logger.info("help!")
+
+            Either.Right(Effect.EmptyEffect)
+        }.build()
     };
 
     abstract fun executor(): ContextualExecutor
