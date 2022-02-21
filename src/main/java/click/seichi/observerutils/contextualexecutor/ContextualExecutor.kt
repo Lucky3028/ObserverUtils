@@ -1,7 +1,6 @@
 package click.seichi.observerutils.contextualexecutor
 
 import arrow.core.Either
-import click.seichi.observerutils.Effect
 import com.github.shynixn.mccoroutine.SuspendingCommandExecutor
 import com.github.shynixn.mccoroutine.SuspendingTabCompleter
 import org.bukkit.command.Command

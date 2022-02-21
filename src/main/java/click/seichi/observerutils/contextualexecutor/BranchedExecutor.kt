@@ -3,7 +3,6 @@ package click.seichi.observerutils.contextualexecutor
 import arrow.core.Either
 import arrow.core.Option
 import arrow.core.getOrElse
-import click.seichi.observerutils.Effect
 
 data class BranchedExecutor(
     val branches: Map<String, ContextualExecutor>,
