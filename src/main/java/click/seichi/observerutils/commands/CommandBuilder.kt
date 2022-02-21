@@ -6,6 +6,7 @@ import arrow.core.flatMap
 import arrow.core.getOrElse
 import click.seichi.observerutils.contextualexecutor.Effect
 import click.seichi.observerutils.contextualexecutor.*
+import click.seichi.observerutils.splitFirst
 import org.bukkit.command.CommandSender
 
 typealias SenderTypeValidation<CS> = (CommandSender) -> Either<Throwable, CS>

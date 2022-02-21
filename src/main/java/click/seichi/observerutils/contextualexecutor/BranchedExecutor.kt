@@ -1,8 +1,8 @@
 package click.seichi.observerutils.contextualexecutor
 
 import arrow.core.Either
-import arrow.core.Option
 import arrow.core.getOrElse
+import click.seichi.observerutils.splitFirst
 
 data class BranchedExecutor(
     val branches: Map<String, ContextualExecutor>,
@@ -27,5 +27,3 @@ data class BranchedExecutor(
         }.getOrElse { branches.keys.toList().sorted() }
     }
 }
-
-fun <T> Collection<T>.splitFirst(): Option<Pair<T, List<T>>> = Option.catch { this.first() to this.drop(1) }
