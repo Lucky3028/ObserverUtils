@@ -1,34 +1,32 @@
 package click.seichi.observerutils.contextualexecutor
 
-import com.github.michaelbull.result.Result
+import arrow.core.Either
+import arrow.core.Option
+import arrow.core.getOrElse
+import click.seichi.observerutils.Effect
 
 data class BranchedExecutor(
     val branches: Map<String, ContextualExecutor>,
     val whenArgIsInsufficient: ContextualExecutor = PrintUsageExecutor,
     val whenBranchIsNotFound: ContextualExecutor = PrintUsageExecutor
 ) : ContextualExecutor {
-    override fun executeWith(context: RawCommandContext): Result<Any, Throwable> {
-        fun execute(executor: ContextualExecutor) = executor.executeWith(context)
+    override suspend fun executeWith(context: RawCommandContext): Either<Throwable, Effect> {
+        suspend fun execute(executor: ContextualExecutor) = executor.executeWith(context)
 
-        val (head, tail) = context.args.splitFirst()
-
-        return head?.let {
-            val branch = branches.getOrElse(it) { return execute(whenBranchIsNotFound) }
+        return context.args.splitFirst().map { (head, tail) ->
+            val branch = branches.getOrElse(head) { return execute(whenBranchIsNotFound) }
             val argShiftedContext = context.copy(args = tail)
 
             branch.executeWith(argShiftedContext)
-        } ?: execute(whenArgIsInsufficient)
+        }.getOrElse { execute(whenArgIsInsufficient) }
     }
 
     override fun tabCandidatesFor(context: RawCommandContext): List<String> {
-        val (head, tail) = context.args.splitFirst()
-
-        return head?.let {
-            val childExecutor = branches.getOrElse(it) { return emptyList() }
+        return context.args.splitFirst().map { (head, tail) ->
+            val childExecutor = branches.getOrElse(head) { return emptyList() }
             childExecutor.tabCandidatesFor(context.copy(args = tail))
-        } ?: branches.keys.toList().sorted()
+        }.getOrElse { branches.keys.toList().sorted() }
     }
 }
 
-fun <T> Collection<T>.splitFirst(): Pair<T?, List<T>> =
-    this.firstOrNull()?.let { it to this.drop(1) } ?: (null to emptyList())
+fun <T> Collection<T>.splitFirst(): Option<Pair<T, List<T>>> = Option.catch { this.first() to this.drop(1) }

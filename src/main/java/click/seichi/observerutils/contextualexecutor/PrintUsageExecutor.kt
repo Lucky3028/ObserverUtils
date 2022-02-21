@@ -1,9 +1,9 @@
 package click.seichi.observerutils.contextualexecutor
 
-import com.github.michaelbull.result.Ok
-import com.github.michaelbull.result.Result
+import arrow.core.Either
+import click.seichi.observerutils.Effect
 
 object PrintUsageExecutor: ContextualExecutor {
-    override fun executeWith(context: RawCommandContext): Result<Any, Throwable> =
-        Ok(context.sender.sendMessage(context.command.command.usage))
+    override suspend fun executeWith(context: RawCommandContext): Either<Throwable, Effect> =
+        Either.Right(Effect.MessageEffect(context.command.command.usage))
 }
