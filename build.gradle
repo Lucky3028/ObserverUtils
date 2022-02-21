@@ -16,6 +16,10 @@ repositories {
         name = 'sonatype'
         url = 'https://oss.sonatype.org/content/groups/public/'
     }
+    maven {
+        name = 'worldguard'
+        url = "https://maven.enginehub.org/repo/"
+    }
 }
 
 configurations {
@@ -24,9 +28,14 @@ configurations {
 }
 
 dependencies {
-    compileOnly 'org.spigotmc:spigot-api:1.12.2-R0.1-SNAPSHOT'
-    embed "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
-    embed "com.michael-bull.kotlin-result:kotlin-result:1.1.14"
+    implementation 'org.spigotmc:spigot-api:1.12.2-R0.1-SNAPSHOT'
+    implementation 'com.sk89q.worldguard:worldguard-legacy:6.2'
+    implementation 'com.github.shynixn.mccoroutine:mccoroutine-bukkit-api:1.5.0'
+    embed 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
+    embed 'org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.6.0'
+    embed 'com.squareup.okhttp3:okhttp:4.9.3'
+    embed 'io.arrow-kt:arrow-core:1.0.1'
+    embed 'com.github.shynixn.mccoroutine:mccoroutine-bukkit-core:1.5.0'
 }
 
 def targetJavaVersion = 8
