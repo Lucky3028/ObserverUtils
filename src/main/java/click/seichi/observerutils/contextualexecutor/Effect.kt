@@ -26,7 +26,7 @@ sealed interface Effect {
         override fun run(sender: CommandSender) = effects.forEach { it.run(sender) }
     }
 
-    open fun run(sender: CommandSender) {
+    fun run(sender: CommandSender) {
         /** Nothing to do */
     }
 }
