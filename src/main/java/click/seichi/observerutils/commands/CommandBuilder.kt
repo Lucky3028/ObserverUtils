@@ -6,17 +6,9 @@ import arrow.core.flatMap
 import arrow.core.getOrElse
 import click.seichi.observerutils.EffectOrError
 import click.seichi.observerutils.ResultOrError
-import click.seichi.observerutils.contextualexecutor.ContextualExecutor
-import click.seichi.observerutils.contextualexecutor.ParsedArgCommandContext
-import click.seichi.observerutils.contextualexecutor.PartiallyParsedArgs
-import click.seichi.observerutils.contextualexecutor.RawCommandContext
+import click.seichi.observerutils.contextualexecutor.*
 import click.seichi.observerutils.splitFirst
 import org.bukkit.command.CommandSender
-
-typealias SenderTypeValidation<CS> = (CommandSender) -> ResultOrError<CS>
-typealias CommandArgumentsParser<CS> = (CS, RawCommandContext) -> ResultOrError<PartiallyParsedArgs>
-typealias ScopedContextualExecution<CS> = (ParsedArgCommandContext<CS>) -> EffectOrError
-typealias SingleArgumentParser = (String) -> ResultOrError<Any>
 
 data class CommandBuilder<CS : CommandSender>(
     var senderTypeValidation: SenderTypeValidation<CS>,
