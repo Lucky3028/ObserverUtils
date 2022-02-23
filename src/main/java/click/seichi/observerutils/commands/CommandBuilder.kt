@@ -18,11 +18,11 @@ typealias CommandArgumentsParser<CS> = (CS, RawCommandContext) -> ResultOrError<
 typealias ScopedContextualExecution<CS> = (ParsedArgCommandContext<CS>) -> EffectOrError
 typealias SingleArgumentParser = (String) -> ResultOrError<Any>
 
-data class CommandBuilder<CS: CommandSender>(
+data class CommandBuilder<CS : CommandSender>(
     var senderTypeValidation: SenderTypeValidation<CS>,
     var argumentsParser: CommandArgumentsParser<CS>,
     var contextualExecution: ScopedContextualExecution<CS>
-){
+) {
     companion object {
         private val defaultSenderValidation: SenderTypeValidation<CommandSender> = { Either.Right(it) }
         private val defaultArgumentsParser: CommandArgumentsParser<CommandSender> = { _, context ->
@@ -67,9 +67,11 @@ data class CommandBuilder<CS: CommandSender>(
     fun execution(execution: ScopedContextualExecution<CS>): CommandBuilder<CS> = copy(contextualExecution = execution)
 
     inline fun <reified CS1 : CS> refineSender(): CommandBuilder<CS1> {
-        val newSenderTypeValidation: SenderTypeValidation<CS1> = { sender -> senderTypeValidation(sender).flatMap {
-            Either.catch { it as CS1 }
-        } }
+        val newSenderTypeValidation: SenderTypeValidation<CS1> = { sender ->
+            senderTypeValidation(sender).flatMap {
+                Either.catch { it as CS1 }
+            }
+        }
 
         return CommandBuilder(newSenderTypeValidation, argumentsParser, contextualExecution)
     }

@@ -2,15 +2,16 @@ package click.seichi.observerutils
 
 import click.seichi.observerutils.LoggerLevel.*
 import org.bukkit.Bukkit
+
 // TODO: Throwable Eitherをまとめる
-enum class LoggerLevel{
+enum class LoggerLevel {
     INFO, WARN, SEVERE
 }
 
 object Logger {
     private val logger = Bukkit.getServer().logger
 
-    fun log(messages: List<String>, level: LoggerLevel = INFO) = when(level){
+    fun log(messages: List<String>, level: LoggerLevel = INFO) = when (level) {
         INFO -> info(messages)
         WARN -> warn(messages)
         SEVERE -> severe(messages)

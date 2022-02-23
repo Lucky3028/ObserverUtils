@@ -12,6 +12,7 @@ object ExternalPlugin {
     object WorldGuard {
         private val instance = Bukkit.getPluginManager().getPlugin("WorldGuard").toOption()
             .map { it as WorldGuardPlugin }.getOrElse { throw Exception("WorldGuard cannnot be found!") }
+
         private fun regionManager(world: World) = instance.regionContainer.get(world).toOption()
 
         fun getRegions(world: World, location: Location) =

@@ -11,7 +11,7 @@ const val IssueNewStatusId = 1
 const val ObsProjectId = 4
 
 @Serializable
-class Issue (private val issue: RedmineIssue)
+class Issue(private val issue: RedmineIssue)
 
 @Serializable
 class RedmineIssue private constructor(

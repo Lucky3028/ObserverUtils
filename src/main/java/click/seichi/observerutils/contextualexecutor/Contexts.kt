@@ -18,7 +18,7 @@ data class PartiallyParsedArgs(
     val yetToBeParsed: List<String>
 )
 
-data class ParsedArgCommandContext<out CS: CommandSender>(
+data class ParsedArgCommandContext<out CS : CommandSender>(
     val sender: CS,
     val command: ExecutedCommand,
     val args: PartiallyParsedArgs
