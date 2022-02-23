@@ -3,5 +3,5 @@ package click.seichi.observerutils
 import arrow.core.Either
 import click.seichi.observerutils.contextualexecutor.Effect
 
-typealias EffectOrError = ResultOrError<Effect>
-typealias ResultOrError<T> = Either<Throwable, T>
+typealias EffectOrThrowable = ResultOrThrowable<Effect>
+typealias ResultOrThrowable<T> = Either<Throwable, T>

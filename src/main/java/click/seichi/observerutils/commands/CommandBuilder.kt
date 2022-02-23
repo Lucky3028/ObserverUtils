@@ -4,8 +4,8 @@ import arrow.core.Either
 import arrow.core.computations.either
 import arrow.core.flatMap
 import arrow.core.getOrElse
-import click.seichi.observerutils.EffectOrError
-import click.seichi.observerutils.ResultOrError
+import click.seichi.observerutils.EffectOrThrowable
+import click.seichi.observerutils.ResultOrThrowable
 import click.seichi.observerutils.contextualexecutor.*
 import click.seichi.observerutils.utils.splitFirst
 import org.bukkit.command.CommandSender
@@ -36,7 +36,7 @@ data class CommandBuilder<CS : CommandSender>(
                 remainingParsers: List<SingleArgumentParser>,
                 remainingArgs: List<String>,
                 reverseAccumulator: List<Any> = emptyList()
-            ): ResultOrError<PartiallyParsedArgs> {
+            ): ResultOrThrowable<PartiallyParsedArgs> {
                 val (parserHead, parserTail) = remainingParsers.splitFirst().getOrElse {
                     return Either.Right(PartiallyParsedArgs(reverseAccumulator.reversed(), remainingArgs))
                 }
@@ -69,7 +69,7 @@ data class CommandBuilder<CS : CommandSender>(
     }
 
     fun build(): ContextualExecutor = object : ContextualExecutor {
-        override suspend fun executeWith(context: RawCommandContext): EffectOrError = either {
+        override suspend fun executeWith(context: RawCommandContext): EffectOrThrowable = either {
             val refinedSender = senderTypeValidation(context.sender).bind()
             val parsedArgs = argumentsParser(refinedSender, context).bind()
             val parsedContext = ParsedArgCommandContext(refinedSender, context.command, parsedArgs)
