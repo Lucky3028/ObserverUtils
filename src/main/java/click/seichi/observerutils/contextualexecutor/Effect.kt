@@ -1,7 +1,7 @@
 package click.seichi.observerutils.contextualexecutor
 
-import click.seichi.observerutils.Logger
-import click.seichi.observerutils.LoggerLevel
+import click.seichi.observerutils.utils.Logger
+import click.seichi.observerutils.utils.LoggerLevel
 import org.bukkit.command.CommandSender
 
 sealed interface Effect {

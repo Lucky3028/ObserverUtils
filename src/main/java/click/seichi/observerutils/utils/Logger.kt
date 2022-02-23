@@ -1,9 +1,8 @@
-package click.seichi.observerutils
+package click.seichi.observerutils.utils
 
-import click.seichi.observerutils.LoggerLevel.*
+import click.seichi.observerutils.utils.LoggerLevel.*
 import org.bukkit.Bukkit
 
-// TODO: Throwable Eitherをまとめる
 enum class LoggerLevel {
     INFO, WARN, SEVERE
 }
