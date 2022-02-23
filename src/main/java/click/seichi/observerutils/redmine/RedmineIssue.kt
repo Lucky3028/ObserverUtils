@@ -1,4 +1,4 @@
-package click.seichi.observerutils
+package click.seichi.observerutils.redmine
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

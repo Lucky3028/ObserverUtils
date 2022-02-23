@@ -1,4 +1,4 @@
-package click.seichi.observerutils
+package click.seichi.observerutils.redmine
 
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.Request
@@ -7,7 +7,7 @@ import com.github.kittinunf.fuel.core.extensions.jsonBody
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
-class RedmineClient(private val redmineApiKey: String) {
+class RedmineClient(redmineApiKey: String) {
     private val redmineDomain = "https://redmine.seichi.click"
     private val redmineIssueUrl = "$redmineDomain/issues.json?key=$redmineApiKey"
 
