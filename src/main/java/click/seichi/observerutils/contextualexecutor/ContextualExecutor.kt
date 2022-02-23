@@ -1,13 +1,13 @@
 package click.seichi.observerutils.contextualexecutor
 
-import arrow.core.Either
+import click.seichi.observerutils.EffectOrError
 import com.github.shynixn.mccoroutine.SuspendingCommandExecutor
 import com.github.shynixn.mccoroutine.SuspendingTabCompleter
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
 
 interface ContextualExecutor {
-    suspend fun executeWith(context: RawCommandContext): Either<Throwable, Effect>
+    suspend fun executeWith(context: RawCommandContext): EffectOrError
 
     fun tabCandidatesFor(context: RawCommandContext): List<String> = emptyList()
 }

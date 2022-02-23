@@ -4,15 +4,19 @@ import arrow.core.Either
 import arrow.core.computations.either
 import arrow.core.flatMap
 import arrow.core.getOrElse
-import click.seichi.observerutils.contextualexecutor.Effect
-import click.seichi.observerutils.contextualexecutor.*
+import click.seichi.observerutils.EffectOrError
+import click.seichi.observerutils.ResultOrError
+import click.seichi.observerutils.contextualexecutor.ContextualExecutor
+import click.seichi.observerutils.contextualexecutor.ParsedArgCommandContext
+import click.seichi.observerutils.contextualexecutor.PartiallyParsedArgs
+import click.seichi.observerutils.contextualexecutor.RawCommandContext
 import click.seichi.observerutils.splitFirst
 import org.bukkit.command.CommandSender
 
-typealias SenderTypeValidation<CS> = (CommandSender) -> Either<Throwable, CS>
-typealias CommandArgumentsParser<CS> = (CS, RawCommandContext) -> Either<Throwable, PartiallyParsedArgs>
-typealias ScopedContextualExecution<CS> = (ParsedArgCommandContext<CS>) -> Either<Throwable, Effect>
-typealias SingleArgumentParser = (String) -> Either<Throwable, Any>
+typealias SenderTypeValidation<CS> = (CommandSender) -> ResultOrError<CS>
+typealias CommandArgumentsParser<CS> = (CS, RawCommandContext) -> ResultOrError<PartiallyParsedArgs>
+typealias ScopedContextualExecution<CS> = (ParsedArgCommandContext<CS>) -> EffectOrError
+typealias SingleArgumentParser = (String) -> ResultOrError<Any>
 
 data class CommandBuilder<CS: CommandSender>(
     var senderTypeValidation: SenderTypeValidation<CS>,
@@ -40,7 +44,7 @@ data class CommandBuilder<CS: CommandSender>(
                 remainingParsers: List<SingleArgumentParser>,
                 remainingArgs: List<String>,
                 reverseAccumulator: List<Any> = emptyList()
-            ): Either<Throwable, PartiallyParsedArgs> {
+            ): ResultOrError<PartiallyParsedArgs> {
                 val (parserHead, parserTail) = remainingParsers.splitFirst().getOrElse {
                     return Either.Right(PartiallyParsedArgs(reverseAccumulator.reversed(), remainingArgs))
                 }
@@ -70,8 +74,8 @@ data class CommandBuilder<CS: CommandSender>(
         return CommandBuilder(newSenderTypeValidation, argumentsParser, contextualExecution)
     }
 
-    fun build(): ContextualExecutor = object: ContextualExecutor {
-        override suspend fun executeWith(context: RawCommandContext): Either<Throwable, Effect> = either {
+    fun build(): ContextualExecutor = object : ContextualExecutor {
+        override suspend fun executeWith(context: RawCommandContext): EffectOrError = either {
             val refinedSender = senderTypeValidation(context.sender).bind()
             val parsedArgs = argumentsParser(refinedSender, context).bind()
             val parsedContext = ParsedArgCommandContext(refinedSender, context.command, parsedArgs)
