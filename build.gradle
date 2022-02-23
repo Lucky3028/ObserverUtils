@@ -1,3 +1,17 @@
+buildscript {
+    ext.versions = [
+        // Kotlinのバージョン指定はgradle.propertiesに
+        spigot: '1.12.2-R0.1-SNAPSHOT',
+        worldguard: '6.2'
+    ]
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.guardsquare:proguard-gradle:7.1.0'
+    }
+}
+
 plugins {
     id 'java'
     id 'org.jetbrains.kotlin.jvm' version '1.6.10'
@@ -63,4 +77,16 @@ compileTestKotlin {
 jar {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     from configurations.embed.collect { it.isDirectory() ? it : zipTree(it) }
+}
+
+import proguard.gradle.ProGuardTask
+task proguard(type: ProGuardTask) {
+    injars "./build/libs/ObserverUtils-${version}.jar"
+    outjars "./build/libs/ObserverUtils-${version}.opt.jar"
+    libraryjars "${System.getProperty('java.home')}/lib/rt.jar"
+    libraryjars "${System.getProperty('user.home')}/.gradle/caches/modules-2/files-2.1/com.sk89q.worldguard/worldguard-legacy/${versions.worldguard}/4835055c94f69c8bba9857053828671f5f730308/worldguard-legacy-${versions.worldguard}.jar"
+    libraryjars "${System.getProperty('user.home')}/.gradle/caches/modules-2/files-2.1/org.spigotmc/spigot-api/${versions.spigot}/a38cb171545121dc90ca6bcaf5072c4ec9bc9ca6/spigot-api-${versions.spigot}.jar"
+    dontwarn 'kotlinx.coroutines.debug.AgentPremain'
+    keep 'class click.seichi.observerutils.ObserverUtils'
+    dontobfuscate
 }
