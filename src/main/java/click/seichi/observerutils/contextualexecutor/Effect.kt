@@ -4,9 +4,10 @@ import click.seichi.observerutils.Logger
 import click.seichi.observerutils.LoggerLevel
 import org.bukkit.command.CommandSender
 
-sealed class Effect {
-    object EmptyEffect : Effect()
-    data class MessageEffect(private val messages: List<String>) : Effect() {
+sealed interface Effect {
+    object EmptyEffect : Effect
+
+    data class MessageEffect(private val messages: List<String>) : Effect {
         constructor(message: String) : this(listOf(message))
 
         override fun run(sender: CommandSender) = sender.sendMessage(messages.toTypedArray())
