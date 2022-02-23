@@ -7,7 +7,7 @@ import arrow.core.getOrElse
 import click.seichi.observerutils.EffectOrError
 import click.seichi.observerutils.ResultOrError
 import click.seichi.observerutils.contextualexecutor.*
-import click.seichi.observerutils.splitFirst
+import click.seichi.observerutils.utils.splitFirst
 import org.bukkit.command.CommandSender
 
 data class CommandBuilder<CS : CommandSender>(

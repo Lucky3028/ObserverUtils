@@ -1,4 +1,4 @@
-package click.seichi.observerutils
+package click.seichi.observerutils.utils
 
 import arrow.core.Option
 

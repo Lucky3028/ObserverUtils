@@ -2,7 +2,7 @@ package click.seichi.observerutils.contextualexecutor
 
 import arrow.core.getOrElse
 import click.seichi.observerutils.EffectOrError
-import click.seichi.observerutils.splitFirst
+import click.seichi.observerutils.utils.splitFirst
 
 data class BranchedExecutor(
     val branches: Map<String, ContextualExecutor>,
