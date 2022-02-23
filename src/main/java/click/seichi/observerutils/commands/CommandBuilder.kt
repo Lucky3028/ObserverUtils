@@ -4,7 +4,9 @@ import arrow.core.Either
 import arrow.core.computations.either
 import arrow.core.flatMap
 import arrow.core.getOrElse
-import click.seichi.observerutils.EffectOrThrowable
+import click.seichi.observerutils.CommandBuildException
+import click.seichi.observerutils.EffectOrErr
+import click.seichi.observerutils.ResultOrErr
 import click.seichi.observerutils.ResultOrThrowable
 import click.seichi.observerutils.contextualexecutor.*
 import click.seichi.observerutils.utils.splitFirst
@@ -36,13 +38,13 @@ data class CommandBuilder<CS : CommandSender>(
                 remainingParsers: List<SingleArgumentParser>,
                 remainingArgs: List<String>,
                 reverseAccumulator: List<Any> = emptyList()
-            ): ResultOrThrowable<PartiallyParsedArgs> {
+            ): ResultOrErr<PartiallyParsedArgs> {
                 val (parserHead, parserTail) = remainingParsers.splitFirst().getOrElse {
                     return Either.Right(PartiallyParsedArgs(reverseAccumulator.reversed(), remainingArgs))
                 }
 
                 val (argHead, argTail) = remainingArgs.splitFirst().getOrElse {
-                    return Either.Left(Exception("Missing Arguments"))
+                    return Either.Left(CommandBuildException.MissingArgument())
                 }
 
                 return parserHead(argHead).flatMap { parsedArg ->
@@ -56,20 +58,20 @@ data class CommandBuilder<CS : CommandSender>(
         return copy(argumentsParser = combinedParser)
     }
 
-    fun execution(execution: ScopedContextualExecution<CS>): CommandBuilder<CS> = copy(contextualExecution = execution)
+    fun execution(execution: ScopedContextualExecution<CS>) = copy(contextualExecution = execution)
 
-    inline fun <reified CS1 : CS> refineSender(): CommandBuilder<CS1> {
+    inline fun <reified CS1 : CS> refineSender(senderType: String): CommandBuilder<CS1> {
         val newSenderTypeValidation: SenderTypeValidation<CS1> = { sender ->
             senderTypeValidation(sender).flatMap {
-                Either.catch { it as CS1 }
+                Either.catch { it as CS1 }.mapLeft { CommandBuildException.FailedToCastSender(senderType) }
             }
         }
 
         return CommandBuilder(newSenderTypeValidation, argumentsParser, contextualExecution)
     }
 
-    fun build(): ContextualExecutor = object : ContextualExecutor {
-        override suspend fun executeWith(context: RawCommandContext): EffectOrThrowable = either {
+    fun build() = object : ContextualExecutor {
+        override suspend fun executeWith(context: RawCommandContext): EffectOrErr = either {
             val refinedSender = senderTypeValidation(context.sender).bind()
             val parsedArgs = argumentsParser(refinedSender, context).bind()
             val parsedContext = ParsedArgCommandContext(refinedSender, context.command, parsedArgs)

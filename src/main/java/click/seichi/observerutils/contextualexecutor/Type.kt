@@ -1,10 +1,10 @@
 package click.seichi.observerutils.contextualexecutor
 
-import click.seichi.observerutils.EffectOrThrowable
-import click.seichi.observerutils.ResultOrThrowable
+import click.seichi.observerutils.EffectOrErr
+import click.seichi.observerutils.ResultOrErr
 import org.bukkit.command.CommandSender
 
-typealias SenderTypeValidation<CS> = suspend (CommandSender) -> ResultOrThrowable<CS>
-typealias CommandArgumentsParser<CS> = (CS, RawCommandContext) -> ResultOrThrowable<PartiallyParsedArgs>
-typealias ScopedContextualExecution<CS> = (ParsedArgCommandContext<CS>) -> EffectOrThrowable
-typealias SingleArgumentParser = (String) -> ResultOrThrowable<Any>
+typealias SenderTypeValidation<CS> = suspend (CommandSender) -> ResultOrErr<CS>
+typealias CommandArgumentsParser<CS> = (CS, RawCommandContext) -> ResultOrErr<PartiallyParsedArgs>
+typealias ScopedContextualExecution<CS> = (ParsedArgCommandContext<CS>) -> EffectOrErr
+typealias SingleArgumentParser = (String) -> ResultOrErr<Any>

@@ -1,6 +1,7 @@
 package click.seichi.observerutils.contextualexecutor
 
 import arrow.core.getOrElse
+import click.seichi.observerutils.EffectOrErr
 import click.seichi.observerutils.EffectOrThrowable
 import click.seichi.observerutils.utils.splitFirst
 
@@ -9,7 +10,7 @@ data class BranchedExecutor(
     val whenArgIsInsufficient: ContextualExecutor = PrintUsageExecutor,
     val whenBranchIsNotFound: ContextualExecutor = PrintUsageExecutor
 ) : ContextualExecutor {
-    override suspend fun executeWith(context: RawCommandContext): EffectOrThrowable {
+    override suspend fun executeWith(context: RawCommandContext): EffectOrErr {
         suspend fun execute(executor: ContextualExecutor) = executor.executeWith(context)
 
         return context.args.splitFirst().map { (head, tail) ->
