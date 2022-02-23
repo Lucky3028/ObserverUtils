@@ -33,7 +33,7 @@ dependencies {
     implementation 'com.github.shynixn.mccoroutine:mccoroutine-bukkit-api:1.5.0'
     embed 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
     embed 'org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.6.0'
-    embed 'com.squareup.okhttp3:okhttp:4.9.3'
+    embed 'com.github.kittinunf.fuel:fuel:2.3.1'
     embed 'io.arrow-kt:arrow-core:1.0.1'
     embed 'com.github.shynixn.mccoroutine:mccoroutine-bukkit-core:1.5.0'
 }
