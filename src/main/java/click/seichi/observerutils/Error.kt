@@ -14,8 +14,8 @@ class WrappedException(val exception: Exception) : Error {
 }
 
 sealed interface CommandBuildException : Error {
-    class FailedToCastSender(executor: String = "(不明)") : CommandBuildException {
-        override val error = "予期しない実行者がコマンドを実行しました。：$executor"
+    class FailedToCastSender(expectedSender: String = "(不明)") : CommandBuildException {
+        override val error = "予期しない実行者がコマンドを実行しました。$expectedSender のみが実行できます。"
     }
 
     class MissingArgument(missingArg: String = "(不明)") : CommandBuildException {
