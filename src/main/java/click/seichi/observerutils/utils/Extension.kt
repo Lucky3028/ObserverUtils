@@ -1,5 +1,9 @@
 package click.seichi.observerutils.utils
 
 import arrow.core.Option
+import org.bukkit.Location
 
-fun <T> Collection<T>.splitFirst(): Option<Pair<T, List<T>>> = Option.catch { this.first() to this.drop(1) }
+fun Location.formatted() = "${this.blockX} ${this.blockY} ${this.blockZ}"
+
+fun <T> Collection<T>.splitFirst() = Option.catch { this.first() to this.drop(1) }
+fun <T> Collection<T>.orEmpty(default: String) = if (this.isEmpty()) default else this.toString()
