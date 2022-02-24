@@ -24,6 +24,9 @@ object Command {
     ).asTabExecutor()
 }
 
+private fun Collection<UUID>.formatted() =
+    this.orEmpty("-") { it.map { uuid -> Bukkit.getOfflinePlayer(uuid).name ?: uuid }.joinToString() }
+
 enum class Commands {
     REGION {
         override fun executor() =
