@@ -13,5 +13,7 @@ class ObserverUtils : SuspendingJavaPlugin() {
     override suspend fun onEnableAsync() {
         PLUGIN = this
         getCommand("obs")!!.setSuspendingExecutor(Command.executor())
+
+        Config.init()
     }
 }
