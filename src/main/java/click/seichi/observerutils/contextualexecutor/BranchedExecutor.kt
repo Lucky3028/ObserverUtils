@@ -2,7 +2,6 @@ package click.seichi.observerutils.contextualexecutor
 
 import arrow.core.getOrElse
 import click.seichi.observerutils.EffectOrErr
-import click.seichi.observerutils.EffectOrThrowable
 import click.seichi.observerutils.utils.splitFirst
 
 data class BranchedExecutor(
