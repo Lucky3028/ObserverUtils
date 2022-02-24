@@ -4,6 +4,7 @@ import click.seichi.observerutils.EffectOrErr
 import click.seichi.observerutils.WrappedException
 import com.github.shynixn.mccoroutine.SuspendingCommandExecutor
 import com.github.shynixn.mccoroutine.SuspendingTabCompleter
+import org.bukkit.ChatColor
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
 
@@ -35,12 +36,11 @@ fun ContextualExecutor.asTabExecutor(): SuspendingCommandExecutor =
             val context = RawCommandContext(sender, ExecutedCommand(command, label), args.toList())
             executeWith(context).fold(
                 ifLeft = {
-                    when (it) {
-                        is WrappedException -> {
-                            it.printStackTrace()
-                            Effect.MessageEffect("不明なエラーが発生しました。管理者に連絡してください。").run(context.sender)
-                        }
-                        else -> Effect.MessageEffect(it.error).run(context.sender)
+                    if (it is WrappedException) {
+                        Effect.MessageEffect("${ChatColor.RED}不明なエラーが発生しました。管理者に連絡してください。").run(context.sender)
+                        it.printStackTrace()
+                    } else {
+                        Effect.MessageEffect(it.error).run(context.sender)
                     }
                 },
                 ifRight = { it.run(context.sender) }
