@@ -53,7 +53,7 @@ enum class Commands {
     },
     FIX {
         override fun executor() = CommandBuilder.beginConfiguration().execution {
-            Either.Right(Effect.MessageEffect(listOf(it.command.command.name, it.args.toString())))
+            Either.Right(Effect.MessageEffect(it.command.command.name, it.args.toString()))
         }.build()
     },
     HELP {
