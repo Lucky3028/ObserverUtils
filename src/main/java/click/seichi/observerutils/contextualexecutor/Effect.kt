@@ -7,22 +7,20 @@ import org.bukkit.command.CommandSender
 sealed interface Effect {
     object EmptyEffect : Effect
 
-    data class MessageEffect(private val messages: List<String>) : Effect {
-        constructor(message: String) : this(listOf(message))
+    class MessageEffect(private vararg val messages: String) : Effect {
 
-        override fun run(sender: CommandSender) = sender.sendMessage(messages.toTypedArray())
+        override fun run(sender: CommandSender) = sender.sendMessage(messages)
     }
 
-    data class LoggerEffect(
-        private val messages: List<String>,
+    class LoggerEffect(
+        private vararg val messages: String,
         private val level: LoggerLevel = LoggerLevel.INFO,
     ) : Effect {
-        constructor(message: String, level: LoggerLevel = LoggerLevel.INFO) : this(listOf(message), level)
 
-        override fun run(sender: CommandSender) = Logger.log(messages, level)
+        override fun run(sender: CommandSender) = Logger.log(messages.toList(), level)
     }
 
-    data class SequantialEffect(private val effects: List<Effect>) : Effect {
+    class SequantialEffect(vararg val effects: Effect) : Effect {
         override fun run(sender: CommandSender) = effects.forEach { it.run(sender) }
     }
 
