@@ -2,6 +2,7 @@ package click.seichi.observerutils.commands
 
 import arrow.core.Either
 import arrow.core.getOrElse
+import arrow.core.right
 import click.seichi.observerutils.Config
 import click.seichi.observerutils.contextualexecutor.BranchedExecutor
 import click.seichi.observerutils.contextualexecutor.ContextualExecutor
@@ -9,11 +10,14 @@ import click.seichi.observerutils.contextualexecutor.Effect
 import click.seichi.observerutils.contextualexecutor.asTabExecutor
 import click.seichi.observerutils.redmine.RedmineClient
 import click.seichi.observerutils.redmine.RedmineIssue
-import click.seichi.observerutils.redmine.Tracker
+import click.seichi.observerutils.redmine.RedmineTracker
 import click.seichi.observerutils.utils.ExternalPlugin.WorldGuard
 import click.seichi.observerutils.utils.formatted
 import click.seichi.observerutils.utils.orEmpty
+import org.bukkit.Bukkit
+import org.bukkit.ChatColor
 import org.bukkit.entity.Player
+import java.util.*
 
 object Command {
     fun executor() = BranchedExecutor(
@@ -35,23 +39,36 @@ enum class Commands {
                 val regions = WorldGuard.getRegions(player.world, player.location).getOrElse {
                     return@execution Either.Right(Effect.MessageEffect("${ChatColor.RED}保護がありません。"))
                 }
-                val isSomeRegions = regions.size >= 2
                 val topRegion = regions.first()
-                // TODO: /tp location
+                val duplicatedRegions =
+                    if (regions.size >= 2) "(${regions.size}): ${regions.joinToString { it.id }}" else "-"
+                val comment = context.args.yetToBeParsed.orEmpty("-") { it.joinToString("\n") }
                 val description = """
                     |_.サーバー|${Config.SERVER_NAME}|
-                    |_.ワールド|${player.world}|
-                    |_.座標|${player.location.formatted()}|
+                    |_.ワールド|${player.world.name}|
+                    |_.座標|/tp ${player.location.formatted()}|
                     |_.保護名|${topRegion.id}|
-                    |_.保護Owner|${topRegion.owners.players.orEmpty("-")}|
-                    |_.保護Member|${topRegion.members.players.orEmpty("-")}|
-                    |_.重複保護|${if (isSomeRegions) regions.size else "-"}|
-                    |_.報告者コメント|${context.args.yetToBeParsed.firstOrNull() ?: "-"}|
+                    |_.保護Owner|${topRegion.owners.uniqueIds.filterNotNull().formatted()}|
+                    |_.保護Member|${topRegion.members.uniqueIds.filterNotNull().formatted()}|
+                    |_.重複保護|$duplicatedRegions|
+                    |_.報告者コメント|$comment|
                 """.trimIndent()
-                val issue = RedmineIssue(Tracker.REGION, "不要保護報告(${Config.SERVER_NAME} ${player.world})", description)
-                val res = RedmineClient(Config.REDMINE_API_KEY).postIssue(issue)
-                // TOOD: 返答を見やすく
-                Either.Right(Effect.LoggerEffect(res.first.toString() + "\n" + res.second.statusCode))
+                val issue = RedmineIssue(
+                    RedmineTracker.REGION,
+                    "${RedmineTracker.REGION.jaName} (${Config.SERVER_NAME} ${player.world.name})",
+                    description
+                )
+                val response = RedmineClient(Config.REDMINE_API_KEY).postIssue(issue)
+
+                response.fold(
+                    ifRight = { Effect.MessageEffect("${ChatColor.AQUA}${description}") },
+                    ifLeft = {
+                        Effect.SequantialEffect(
+                            Effect.MessageEffect("${ChatColor.RED}Redmineにチケットを発行できませんでした。時間を空けて再度試すか、管理者に連絡してください。"),
+                            Effect.LoggerEffect("${ChatColor.RED}Redmineにチケットを発行できませんでした。: ${it.statusCode}(${it.error})")
+                        )
+                    }
+                ).right()
             }.build()
     },
     FIX {
