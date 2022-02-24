@@ -3,10 +3,6 @@ package click.seichi.observerutils.redmine
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-enum class Tracker(val id: Int) {
-    REGION(36), FIX(15)
-}
-
 const val IssueNewStatusId = 1
 const val ObsProjectId = 4
 
@@ -25,6 +21,6 @@ class RedmineIssue private constructor(
     val description: String
 ) {
     constructor(
-        tracker: Tracker, subject: String, description: String
+        tracker: RedmineTracker, subject: String, description: String
     ) : this(ObsProjectId, tracker.id, IssueNewStatusId, subject, description)
 }
