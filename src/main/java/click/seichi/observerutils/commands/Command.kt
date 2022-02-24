@@ -33,7 +33,7 @@ enum class Commands {
             CommandBuilder.beginConfiguration().refineSender<Player>("Player").execution { context ->
                 val player = context.sender
                 val regions = WorldGuard.getRegions(player.world, player.location).getOrElse {
-                    return@execution Either.Right(Effect.MessageEffect("保護がありません"))
+                    return@execution Either.Right(Effect.MessageEffect("${ChatColor.RED}保護がありません。"))
                 }
                 val isSomeRegions = regions.size >= 2
                 val topRegion = regions.first()
