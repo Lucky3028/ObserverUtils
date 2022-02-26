@@ -49,6 +49,8 @@
 
 ## 開発
 
+### デバッグ手順
+
 1. `git clone`
 2. `chmod +x ./gradlew`
 3. `./gradlew jar`
