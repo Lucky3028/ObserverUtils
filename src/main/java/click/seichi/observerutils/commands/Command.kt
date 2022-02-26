@@ -104,12 +104,12 @@ enum class Commands {
                     }
                 ).right()
             }.build()
-    },
-    HELP {
-        override suspend fun executor() = CommandBuilder.beginConfiguration().execution {
-            Either.Right(Effect.MessageEffect("ObserverUtils Help"))
-        }.build()
-    };
+    }
 
-    abstract suspend fun executor(): ContextualExecutor
+    /**
+     * コマンドの一覧と説明を表示する。
+     */
+    object Help {
+        val executor = TraverseExecutor(Region.help, Fix.help, EchoExecutor("/obs help", "　　コマンドの一覧と説明を表示する"))
+    }
 }
