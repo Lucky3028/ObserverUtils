@@ -57,6 +57,22 @@
     * `jar`タスクで生成されたJarをminimizeする。生成先は`./build/libs/ObserverUtils-<Ver.>.opt.jar`。
 5. Spigotサーバーのpluginsフォルダに追加し起動する
 
+### コーディング規約
+
+Kotlin公式コーディング規約[^5]に従う。
+
+#### Nullable
+
+原則使用しない。
+
+### コミット
+
+1コミットあたりの情報は最小限としてください。Conventional Commits[^6]を推奨します。
+
+### デプロイ
+
+運営チームによる手動デプロイ。デバッグ環境はなし。
+
 ## 依存
 
 ### サーバー上で作動させる上で必要な依存
@@ -80,3 +96,5 @@
 [^2]: https://redmine.seichi.click/projects/public/wiki/Supporter_Guide
 [^3]: https://redmine.seichi.click/projects/public/wiki/Supporter_Guide#1%E7%AB%A0Observer%E6%A8%A9%E9%99%90
 [^4]: https://redmine.seichi.click
+[^5]: https://kotlinlang.org/docs/coding-conventions.html
+[^6]: https://www.conventionalcommits.org/ja/v1.0.0/
