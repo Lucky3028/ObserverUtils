@@ -71,7 +71,7 @@ object Commands {
                 response.fold(
                     ifRight = { Effect.MessageEffect("${ChatColor.AQUA}${description}") },
                     ifLeft = {
-                        Effect.SequantialEffect(
+                        Effect.SequentialEffect(
                             Effect.MessageEffect("${ChatColor.RED}Redmineにチケットを発行できませんでした。時間を空けて再度試すか、管理者に連絡してください。"),
                             Effect.LoggerEffect(
                                 "Redmineにチケットを発行できませんでした。: ${it.first.statusCode}(${it.first.error})",
@@ -116,7 +116,7 @@ object Commands {
                 response.fold(
                     ifRight = { Effect.MessageEffect("${ChatColor.AQUA}${description}") },
                     ifLeft = {
-                        Effect.SequantialEffect(
+                        Effect.SequentialEffect(
                             Effect.MessageEffect("${ChatColor.RED}Redmineにチケットを発行できませんでした。時間を空けて再度試すか、管理者に連絡してください。"),
                             Effect.LoggerEffect(
                                 "Redmineにチケットを発行できませんでした。: ${it.first.statusCode}(${it.first.error})",
