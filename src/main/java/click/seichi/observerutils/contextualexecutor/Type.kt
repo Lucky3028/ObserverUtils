@@ -6,5 +6,5 @@ import org.bukkit.command.CommandSender
 
 typealias SenderTypeValidation<CS> = suspend (CommandSender) -> ResultOrErr<CS>
 typealias CommandArgumentsParser<CS> = (CS, RawCommandContext) -> ResultOrErr<PartiallyParsedArgs>
-typealias ScopedContextualExecution<CS> = (ParsedArgCommandContext<CS>) -> EffectOrErr
+typealias ScopedContextualExecution<CS> = suspend (ParsedArgCommandContext<CS>) -> EffectOrErr
 typealias SingleArgumentParser = (String) -> ResultOrErr<Any>
