@@ -1,7 +1,5 @@
 package click.seichi.observerutils
 
-import SealedClassEnumExtension
-
 sealed interface Error {
     val error: String
 }
