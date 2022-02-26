@@ -7,7 +7,7 @@ import org.bukkit.configuration.file.FileConfiguration
 /**
  * [Config]の設定項目をpathと一緒に保持するenum。設定を追加・変更・削除したら、このenumも編集すること。
  */
-enum class Configs(val path: String) {
+private enum class Configs(val path: String) {
     SERVER_NAME("server-name"), REDMINE_API_KEY("redmine-api-key")
 }
 
