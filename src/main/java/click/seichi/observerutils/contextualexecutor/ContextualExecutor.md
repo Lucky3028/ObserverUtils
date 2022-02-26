@@ -1,5 +1,5 @@
 # ContextualExecutor
 
-The codes written in this direcotry come from GiganitcMinecraft/SeichiAssist[^1] which is licensed under GPLv3.
+The codes written in this directory come from GiganitcMinecraft/SeichiAssist[^1] which is licensed under GPLv3.
 
 [^1]: https://github.com/GiganticMinecraft/SeichiAssist/tree/develop/src/main/scala/com/github/unchama/contextualexecutor
