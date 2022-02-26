@@ -38,6 +38,15 @@
 
 初期設定ではOPのみが所持している。`observerutils.obs`を付与することで実行可能。
 
+## 設定
+
+すべて`config.yml`に記載。
+
+* `server-name`
+  * サーバーの識別に使用する。Redmineに記載される。
+* `redmine-api-key`
+  * RedmineにアクセスするためのAPIキー。
+
 ## 開発
 
 1. `git clone`
