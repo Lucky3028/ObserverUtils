@@ -4,7 +4,7 @@ import arrow.core.Either
 import click.seichi.observerutils.EffectOrErr
 
 /**
- * [executors]を実行するのExecutor
+ * [executors]をすべて実行するExecutor
  * @param executors 実行する[ContextualExecutor]。
  */
 class TraverseExecutor(private vararg val executors: ContextualExecutor): ContextualExecutor {
