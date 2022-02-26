@@ -6,7 +6,7 @@ sealed interface Error {
     val error: String
 }
 
-class WrappedException(val exception: Exception) : Error {
+class WrappedException(private val exception: Exception) : Error {
     fun printStackTrace() = exception.printStackTrace()
     fun stackTrace() = exception.stackTraceToString()
 
