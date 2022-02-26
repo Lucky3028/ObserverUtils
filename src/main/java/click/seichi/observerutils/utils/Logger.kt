@@ -31,10 +31,12 @@ object Logger {
      * [log]を[LoggerLevel.INFO]で実行するシンタックスシュガー。
      */
     fun info(vararg messages: String) = messages.forEach { logger.info(it) }
+
     /**
      * [log]を[LoggerLevel.WARN]で実行するシンタックスシュガー。
      */
     fun warn(vararg messages: String) = messages.forEach { logger.warning(it) }
+
     /**
      * [log]を[LoggerLevel.SEVERE]で実行するシンタックスシュガー。
      */

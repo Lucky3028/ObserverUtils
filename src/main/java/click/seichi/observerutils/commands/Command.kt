@@ -4,7 +4,8 @@ import arrow.core.Either
 import arrow.core.getOrElse
 import arrow.core.right
 import click.seichi.observerutils.Config
-import click.seichi.observerutils.contextualexecutor.*
+import click.seichi.observerutils.contextualexecutor.Effect
+import click.seichi.observerutils.contextualexecutor.asTabExecutor
 import click.seichi.observerutils.contextualexecutor.executors.BranchedExecutor
 import click.seichi.observerutils.contextualexecutor.executors.EchoExecutor
 import click.seichi.observerutils.contextualexecutor.executors.TraverseExecutor

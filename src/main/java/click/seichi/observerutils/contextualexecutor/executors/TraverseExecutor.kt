@@ -10,7 +10,7 @@ import click.seichi.observerutils.contextualexecutor.RawCommandContext
  * [executors]をすべて実行するExecutor
  * @param executors 実行する[ContextualExecutor]。
  */
-class TraverseExecutor(private vararg val executors: ContextualExecutor): ContextualExecutor {
+class TraverseExecutor(private vararg val executors: ContextualExecutor) : ContextualExecutor {
     override suspend fun executeWith(context: RawCommandContext): EffectOrErr {
         executors.forEach { it.executeWith(context) }
 
