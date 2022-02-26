@@ -4,10 +4,7 @@ import arrow.core.Either
 import arrow.core.getOrElse
 import arrow.core.right
 import click.seichi.observerutils.Config
-import click.seichi.observerutils.contextualexecutor.BranchedExecutor
-import click.seichi.observerutils.contextualexecutor.ContextualExecutor
-import click.seichi.observerutils.contextualexecutor.Effect
-import click.seichi.observerutils.contextualexecutor.asTabExecutor
+import click.seichi.observerutils.contextualexecutor.*
 import click.seichi.observerutils.redmine.RedmineClient
 import click.seichi.observerutils.redmine.RedmineIssue
 import click.seichi.observerutils.redmine.RedmineTracker
@@ -18,18 +15,30 @@ import click.seichi.observerutils.utils.orEmpty
 import org.bukkit.ChatColor
 import org.bukkit.entity.Player
 
+/**
+ * `/obs`コマンドを表現する。サブコマンドで成立している。
+ */
 object Command {
-    suspend fun executor() = BranchedExecutor(
+    fun executor() = BranchedExecutor(
         mapOf(
-            "rg" to Commands.REGION.executor(),
-            "fix" to Commands.FIX.executor()
-        ), Commands.HELP.executor(), Commands.HELP.executor()
+            "rg" to Commands.Region.executor,
+            "fix" to Commands.Fix.executor
+        ), Commands.Help.executor, Commands.Help.executor
     ).asTabExecutor()
 }
 
-enum class Commands {
-    REGION {
-        override suspend fun executor() =
+object Commands {
+    /**
+     * Redmineに不要保護報告チケットを発行する。
+     *
+     * * プレイヤーのみ実行可能。
+     * * プレイヤーの現在座標にWorldGuardの保護が1つ以上ない場合は実行不可。
+     * * コメントは半角スペースで区切ると改行される。入力しなくてもよい。
+     */
+    object Region {
+        val help = EchoExecutor("/obs rg <...コメント>", "　　Redmineに不要保護報告チケットを発行する")
+
+        val executor =
             CommandBuilder.beginConfiguration().refineSender<Player>("Player").execution { context ->
                 val player = context.sender
                 val regions = WorldGuard.getRegions(player.world, player.location).getOrElse {
@@ -69,9 +78,19 @@ enum class Commands {
                     }
                 ).right()
             }.build()
-    },
-    FIX {
-        override suspend fun executor() =
+    }
+
+    /**
+     * Redmineに修繕依頼チケットを発行する。
+     *
+     * * プレイヤーのみ実行可能。
+     * * プレイヤーがWorldEditで範囲を（pos1、pos2の両方）指定していない場合は実行不可。
+     * * コメントは半角スペースで区切ると改行される。入力しなくてもよい。
+     */
+    object Fix {
+        val help = EchoExecutor("/obs fix <...コメント>", "　　Redmineに修繕依頼チケットを発行する")
+
+        val executor =
             CommandBuilder.beginConfiguration().refineSender<Player>("Player").execution { context ->
                 val player = context.sender
                 val selection = ExternalPlugin.WorldEdit.getSelections(player).getOrElse {
