@@ -6,7 +6,7 @@ const val ObsProjectId = 4
 class Issue(private val issue: RedmineIssue)
 
 class RedmineIssue private constructor(
-    val projectd: Int,
+    val project_id: Int,
     val tracker_id: Int,
     val status_id: Int,
     val subject: String,
