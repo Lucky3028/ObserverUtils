@@ -23,7 +23,7 @@ import java.util.*
 object Command {
     suspend fun executor() = BranchedExecutor(
         mapOf(
-            "region" to Commands.REGION.executor(),
+            "rg" to Commands.REGION.executor(),
             "fix" to Commands.FIX.executor()
         ), Commands.HELP.executor(), Commands.HELP.executor()
     ).asTabExecutor()
@@ -67,7 +67,7 @@ enum class Commands {
                         Effect.SequantialEffect(
                             Effect.MessageEffect("${ChatColor.RED}Redmineにチケットを発行できませんでした。時間を空けて再度試すか、管理者に連絡してください。"),
                             Effect.LoggerEffect(
-                                "${ChatColor.RED}Redmineにチケットを発行できませんでした。: ${it.first.statusCode}(${it.first.error})",
+                                "Redmineにチケットを発行できませんでした。: ${it.first.statusCode}(${it.first.error})",
                                 it.second
                             )
                         )
