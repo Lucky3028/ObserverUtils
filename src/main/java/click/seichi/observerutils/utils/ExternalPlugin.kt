@@ -1,7 +1,6 @@
 package click.seichi.observerutils.utils
 
 import arrow.core.None
-import arrow.core.Option
 import arrow.core.computations.option
 import arrow.core.getOrElse
 import arrow.core.toOption
@@ -47,7 +46,7 @@ object ExternalPlugin {
          * @param p 選択範囲を取得したい[Player]
          * @return 指定された[Player]がWorldEditで選択している範囲の最小座標と最大座標を示す[Location]を持つ[Selection]。両方選択されていなければ[None]。
          */
-        suspend fun getSelections(p: Player): Option<Selection> = option {
+        suspend fun getSelections(p: Player) = option {
             val selection = instance.getSelection(p).toOption().bind()
             val min = selection.minimumPoint.toOption().bind()
             val max = selection.maximumPoint.toOption().bind()
