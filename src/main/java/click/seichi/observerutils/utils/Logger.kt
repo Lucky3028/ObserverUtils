@@ -16,16 +16,13 @@ enum class LoggerLevel {
 object Logger {
     private val logger = Bukkit.getServer().logger
 
-    fun log(messages: List<String>, level: LoggerLevel = INFO) = when (level) {
-        INFO -> info(messages)
-        WARN -> warn(messages)
-        SEVERE -> severe(messages)
+    fun log(level: LoggerLevel = INFO, vararg messages: String) = when (level) {
+        INFO -> info(*messages)
+        WARN -> warn(*messages)
+        SEVERE -> severe(*messages)
     }
 
-    fun info(message: String) = info(listOf(message))
-    fun info(messages: List<String>) = messages.forEach { logger.info(it) }
-    fun warn(message: String) = warn(listOf(message))
-    fun warn(messages: List<String>) = messages.forEach { logger.warning(it) }
-    fun severe(message: String) = severe(listOf(message))
-    fun severe(messages: List<String>) = messages.forEach { logger.severe(it) }
+    fun info(vararg messages: String) = messages.forEach { logger.info(it) }
+    fun warn(vararg messages: String) = messages.forEach { logger.warning(it) }
+    fun severe(vararg messages: String) = messages.forEach { logger.severe(it) }
 }

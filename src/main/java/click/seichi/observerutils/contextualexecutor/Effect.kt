@@ -17,7 +17,7 @@ sealed interface Effect {
         private val level: LoggerLevel = LoggerLevel.INFO,
     ) : Effect {
 
-        override fun run(sender: CommandSender) = Logger.log(messages.toList(), level)
+        override fun run(sender: CommandSender) = Logger.log(level, *messages)
     }
 
     class SequantialEffect(vararg val effects: Effect) : Effect {
