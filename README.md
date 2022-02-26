@@ -4,7 +4,7 @@
 
 ## 機能
 
-1. 以下の内容について、予め指定されたRedmineにチケットを作成する。その際にいくつかの項目を自動で取得する。
+1. 以下の内容について、予め指定されたRedmine[^4]にチケットを作成する。その際にいくつかの項目を自動で取得する。
   * 修繕依頼
     * サーバー
     * ワールド
@@ -22,7 +22,7 @@
 
 ## コマンド
 
-1. Redmineへのチケット作成
+1. Redmine[^4]へのチケット作成
    * 修繕依頼
      * `/obs fix <コメント>`
      * コメントは半角スペースで区切ると改行される。
@@ -58,3 +58,8 @@
 ## ライセンス
 
 [GPL v3](./LICENSE)
+
+[^1]: https://www.seichi.network/gigantic
+[^2]: https://redmine.seichi.click/projects/public/wiki/Supporter_Guide
+[^3]: https://redmine.seichi.click/projects/public/wiki/Supporter_Guide#1%E7%AB%A0Observer%E6%A8%A9%E9%99%90
+[^4]: https://redmine.seichi.click
