@@ -2,7 +2,8 @@ buildscript {
     ext.versions = [
         // Kotlinのバージョン指定はgradle.propertiesに
         spigot: '1.12.2-R0.1-SNAPSHOT',
-        worldguard: '6.2'
+        worldguard: '6.2',
+        worldedit: '6.1.5'
     ]
     repositories {
         mavenCentral()
@@ -32,7 +33,7 @@ repositories {
         url = 'https://oss.sonatype.org/content/groups/public/'
     }
     maven {
-        name = 'worldguard'
+        name = 'sk89q'
         url = 'https://maven.enginehub.org/repo/'
     }
 }
@@ -45,6 +46,7 @@ configurations {
 dependencies {
     implementation "org.spigotmc:spigot-api:${versions.spigot}"
     implementation "com.sk89q.worldguard:worldguard-legacy:${versions.worldguard}"
+    implementation "com.sk89q.worldedit:worldedit-bukkit:${versions.worldedit}"
     implementation 'com.github.shynixn.mccoroutine:mccoroutine-bukkit-api:1.5.0'
     embed 'com.google.code.gson:gson:2.9.0'
     embed 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
@@ -84,10 +86,10 @@ task proguard(type: ProGuardTask) {
     outjars "./build/libs/ObserverUtils-${version}.opt.jar"
     libraryjars "${System.getProperty('java.home')}/lib/rt.jar"
     libraryjars "${System.getProperty('user.home')}/.gradle/caches/modules-2/files-2.1/com.sk89q.worldguard/worldguard-legacy/${versions.worldguard}/4835055c94f69c8bba9857053828671f5f730308/worldguard-legacy-${versions.worldguard}.jar"
+    libraryjars "${System.getProperty('user.home')}/.gradle/caches/modules-2/files-2.1/com.sk89q.worldedit/worldedit-bukkit/${versions.worldedit}/d887cb95f6b2b69ac550ef58091d3724beffb44d/worldedit-bukkit-${versions.worldedit}.jar"
     libraryjars "${System.getProperty('user.home')}/.gradle/caches/modules-2/files-2.1/org.spigotmc/spigot-api/${versions.spigot}/a38cb171545121dc90ca6bcaf5072c4ec9bc9ca6/spigot-api-${versions.spigot}.jar"
     dontwarn 'kotlinx.coroutines.debug.AgentPremain'
-    keep annotation: 'kotlinx.serialization.Serializable'
-    keep annotation: 'kotlinx.serialization.SerialName'
+    keep 'class click.seichi.observerutils.redmine.** {*;}'
     keep 'class click.seichi.observerutils.ObserverUtils'
     dontobfuscate
 }
