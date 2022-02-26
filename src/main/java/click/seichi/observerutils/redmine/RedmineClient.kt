@@ -19,7 +19,7 @@ class RedmineClient(redmineApiKey: String) {
 
     /**
      * RedmineにIssueを作成する。
-     * @param issue 作成するissueの内容。`RedmineIssue`を指定する。
+     * @param issue 作成するissueの内容。[RedmineIssue]を指定する。
      */
     fun postIssue(issue: RedmineIssue): Either<Pair<HttpException, String>, Response> {
         val content = Gson().toJson(Issue(issue))
