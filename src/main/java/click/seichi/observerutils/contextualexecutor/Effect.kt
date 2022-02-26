@@ -8,7 +8,6 @@ sealed interface Effect {
     object EmptyEffect : Effect
 
     class MessageEffect(private vararg val messages: String) : Effect {
-
         override fun run(sender: CommandSender) = sender.sendMessage(messages)
     }
 
@@ -16,7 +15,6 @@ sealed interface Effect {
         private vararg val messages: String,
         private val level: LoggerLevel = LoggerLevel.INFO,
     ) : Effect {
-
         override fun run(sender: CommandSender) = Logger.log(level, *messages)
     }
 
