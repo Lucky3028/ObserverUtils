@@ -20,7 +20,7 @@ sealed interface Effect {
         override fun run(sender: CommandSender) = Logger.log(level, *messages)
     }
 
-    class SequentialEffect(vararg val effects: Effect) : Effect {
+    class SequentialEffect(private vararg val effects: Effect) : Effect {
         override fun run(sender: CommandSender) = effects.forEach { it.run(sender) }
     }
 
