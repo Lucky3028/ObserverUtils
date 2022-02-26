@@ -11,6 +11,11 @@ import click.seichi.observerutils.contextualexecutor.*
 import click.seichi.observerutils.utils.splitFirst
 import org.bukkit.command.CommandSender
 
+/**
+ * The codes written in this file come from GiganticMinecraft/SeichiAssist which is licensed under GPLv3.
+ * https://github.com/GiganticMinecraft/SeichiAssist/blob/develop/src/main/scala/com/github/unchama/contextualexecutor/builder/ContextualExecutorBuilder.scala
+ */
+
 data class CommandBuilder<CS : CommandSender>(
     var senderTypeValidation: SenderTypeValidation<CS>,
     var argumentsParser: CommandArgumentsParser<CS>,
