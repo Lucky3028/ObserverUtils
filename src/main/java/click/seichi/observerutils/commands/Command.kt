@@ -11,6 +11,7 @@ import click.seichi.observerutils.contextualexecutor.asTabExecutor
 import click.seichi.observerutils.redmine.RedmineClient
 import click.seichi.observerutils.redmine.RedmineIssue
 import click.seichi.observerutils.redmine.RedmineTracker
+import click.seichi.observerutils.utils.ExternalPlugin
 import click.seichi.observerutils.utils.ExternalPlugin.WorldGuard
 import click.seichi.observerutils.utils.formatted
 import click.seichi.observerutils.utils.orEmpty
@@ -20,7 +21,7 @@ import org.bukkit.entity.Player
 import java.util.*
 
 object Command {
-    fun executor() = BranchedExecutor(
+    suspend fun executor() = BranchedExecutor(
         mapOf(
             "region" to Commands.REGION.executor(),
             "fix" to Commands.FIX.executor()
@@ -33,7 +34,7 @@ private fun Collection<UUID>.formatted() =
 
 enum class Commands {
     REGION {
-        override fun executor() =
+        override suspend fun executor() =
             CommandBuilder.beginConfiguration().refineSender<Player>("Player").execution { context ->
                 val player = context.sender
                 val regions = WorldGuard.getRegions(player.world, player.location).getOrElse {
@@ -65,22 +66,55 @@ enum class Commands {
                     ifLeft = {
                         Effect.SequantialEffect(
                             Effect.MessageEffect("${ChatColor.RED}Redmineにチケットを発行できませんでした。時間を空けて再度試すか、管理者に連絡してください。"),
-                            Effect.LoggerEffect("${ChatColor.RED}Redmineにチケットを発行できませんでした。: ${it.statusCode}(${it.error})")
+                            Effect.LoggerEffect(
+                                "${ChatColor.RED}Redmineにチケットを発行できませんでした。: ${it.first.statusCode}(${it.first.error})",
+                                it.second
+                            )
                         )
                     }
                 ).right()
             }.build()
     },
     FIX {
-        override fun executor() = CommandBuilder.beginConfiguration().execution {
-            Either.Right(Effect.MessageEffect(it.command.command.name, it.args.toString()))
-        }.build()
+        override suspend fun executor() =
+            CommandBuilder.beginConfiguration().refineSender<Player>("Player").execution { context ->
+                val player = context.sender
+                val selection = ExternalPlugin.WorldEdit.getSelections(player).getOrElse {
+                    return@execution Either.Right(Effect.MessageEffect("${ChatColor.RED}範囲が選択されていません。"))
+                }
+                val comment = context.args.yetToBeParsed.orEmpty("-") { it.joinToString("\n") }
+                val description = """
+                    |_.サーバー|${Config.SERVER_NAME}|
+                    |_.ワールド|${player.world.name}|
+                    |_.座標|${selection.min.formatted()} -> ${selection.max.formatted()}|
+                    |_.報告者コメント|$comment|
+                """.trimIndent()
+                val issue = RedmineIssue(
+                    RedmineTracker.FIX,
+                    "${RedmineTracker.FIX.jaName} (${Config.SERVER_NAME} ${player.world.name})",
+                    description
+                )
+                val response = RedmineClient(Config.REDMINE_API_KEY).postIssue(issue)
+
+                response.fold(
+                    ifRight = { Effect.MessageEffect("${ChatColor.AQUA}${description}") },
+                    ifLeft = {
+                        Effect.SequantialEffect(
+                            Effect.MessageEffect("${ChatColor.RED}Redmineにチケットを発行できませんでした。時間を空けて再度試すか、管理者に連絡してください。"),
+                            Effect.LoggerEffect(
+                                "Redmineにチケットを発行できませんでした。: ${it.first.statusCode}(${it.first.error})",
+                                it.second
+                            )
+                        )
+                    }
+                ).right()
+            }.build()
     },
     HELP {
-        override fun executor() = CommandBuilder.beginConfiguration().execution {
+        override suspend fun executor() = CommandBuilder.beginConfiguration().execution {
             Either.Right(Effect.MessageEffect("ObserverUtils Help"))
         }.build()
     };
 
-    abstract fun executor(): ContextualExecutor
+    abstract suspend fun executor(): ContextualExecutor
 }
