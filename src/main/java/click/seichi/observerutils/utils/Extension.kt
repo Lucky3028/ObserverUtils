@@ -1,13 +1,23 @@
 package click.seichi.observerutils.utils
 
 import arrow.core.Option
+import org.bukkit.Bukkit
 import org.bukkit.Location
+import java.util.*
 
 /**
  * [org.bukkit.Location]を文字列にフォーマットする
  * @return X、Y、Z座標を`0 0 0`という順にフォーマットした[String]
  */
 fun Location.formatted() = "${this.blockX} ${this.blockY} ${this.blockZ}"
+
+/**
+ * 与えられた[UUID]の[Collection]を、MinecraftIDに変換できるものは変換し、できないものは[UUID]のまま[String]として返す。空なら「`-`」を返す
+ *
+ * e.g. `0ea34656-b1c7-45c0-8b89-1ec55a70fe17, b66cc3f6-a045-42ad-b4b8-320f20caf140, minechan`
+ */
+fun Collection<UUID>.formatted() =
+    this.orEmpty("-") { it.map { uuid -> Bukkit.getOfflinePlayer(uuid).name ?: uuid }.joinToString() }
 
 /**
  * 与えられた[Collection]の先頭のアイテムと残りのアイテムのリストを返す

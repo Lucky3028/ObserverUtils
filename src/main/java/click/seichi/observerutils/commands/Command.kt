@@ -15,10 +15,8 @@ import click.seichi.observerutils.utils.ExternalPlugin
 import click.seichi.observerutils.utils.ExternalPlugin.WorldGuard
 import click.seichi.observerutils.utils.formatted
 import click.seichi.observerutils.utils.orEmpty
-import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.entity.Player
-import java.util.*
 
 object Command {
     suspend fun executor() = BranchedExecutor(
@@ -28,9 +26,6 @@ object Command {
         ), Commands.HELP.executor(), Commands.HELP.executor()
     ).asTabExecutor()
 }
-
-private fun Collection<UUID>.formatted() =
-    this.orEmpty("-") { it.map { uuid -> Bukkit.getOfflinePlayer(uuid).name ?: uuid }.joinToString() }
 
 enum class Commands {
     REGION {
