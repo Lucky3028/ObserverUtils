@@ -28,8 +28,8 @@ fun <T> Collection<T>.splitFirst() = Option.catch { this.first() to this.drop(1)
 /**
  * 与えられた[Collection]が空ならば[default]、空でなければ[formatter]で指定された関数を適用して返す
  * @param default [Collection]が空の時に返る[String]
- * @param formatter [Collection]が空ではない時に適用する関数
+ * @param formatter [Collection]が空ではない時に適用する関数。初期値は[Collection.toString]を適用する。
  * @return [String]
  */
-fun <T> Collection<T>.orEmpty(default: String, formatter: (Collection<T>) -> String) =
+fun <T> Collection<T>.orEmpty(default: String, formatter: (Collection<T>) -> String = { this.toString() }) =
     if (this.isEmpty()) default else formatter(this)
