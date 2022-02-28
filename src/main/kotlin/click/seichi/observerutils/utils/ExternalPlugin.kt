@@ -27,7 +27,7 @@ object ExternalPlugin {
          * @return 指定された[World]の[Location]に存在するWorldGuardの保護の[Set]。保護がなければ`null`。
          */
         fun getRegions(world: World, location: Location) =
-            regionManager(world)?.getApplicableRegions(location)?.filterNotNull()?.toSet()
+            regionManager(world)?.getApplicableRegions(location)?.filterNotNull()?.toSet().orEmpty()
     }
 
     object WorldEdit {
