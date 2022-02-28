@@ -16,7 +16,7 @@ import org.bukkit.entity.Player
  */
 object ExternalPlugin {
     object WorldGuard {
-        private val instance = Bukkit.getPluginManager().getPlugin("WorldGuard")?.let { it as WorldGuardPlugin }
+        private val instance = Bukkit.getPluginManager()?.getPlugin("WorldGuard")?.let { it as WorldGuardPlugin }
 
         private fun regionManager(world: World) = instance?.regionContainer?.get(world)
 
@@ -31,7 +31,7 @@ object ExternalPlugin {
     }
 
     object WorldEdit {
-        private val instance = Bukkit.getPluginManager().getPlugin("WorldEdit")?.let { it as WorldEditPlugin }
+        private val instance = Bukkit.getPluginManager()?.getPlugin("WorldEdit")?.let { it as WorldEditPlugin }
 
         /**
          * WorldEditの[com.sk89q.worldedit.bukkit.selections.Selection]をラップするdata class。
