@@ -70,7 +70,7 @@ object Commands {
                 val response = RedmineClient(Config.REDMINE_API_KEY).postIssue(issue)
 
                 response.fold(
-                    ifRight = { Effect.MessageEffect("${ChatColor.AQUA}${description}") },
+                    ifRight = { Effect.MessageEffect("${ChatColor.AQUA}Redmineにチケットを発行しました。") },
                     ifLeft = {
                         Effect.SequentialEffect(
                             Effect.MessageEffect("${ChatColor.RED}Redmineにチケットを発行できませんでした。時間を空けて再度試すか、管理者に連絡してください。"),
@@ -115,7 +115,7 @@ object Commands {
                 val response = RedmineClient(Config.REDMINE_API_KEY).postIssue(issue)
 
                 response.fold(
-                    ifRight = { Effect.MessageEffect("${ChatColor.AQUA}${description}") },
+                    ifRight = { Effect.MessageEffect("${ChatColor.AQUA}Redmineにチケットを発行しました。") },
                     ifLeft = {
                         Effect.SequentialEffect(
                             Effect.MessageEffect("${ChatColor.RED}Redmineにチケットを発行できませんでした。時間を空けて再度試すか、管理者に連絡してください。"),
