@@ -1,6 +1,9 @@
 name: ObserverUtils
 version: '${version}'
 main: click.seichi.observerutils.ObserverUtils
+depend:
+  - WorldEdit
+  - WorldGuard
 commands:
   obs:
     description: "This is a command for observers."
