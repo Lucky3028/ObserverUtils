@@ -6,6 +6,7 @@ import com.github.michaelbull.result.Result
 import com.github.michaelbull.result.toResultOr
 import com.sk89q.worldedit.bukkit.WorldEditPlugin
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin
+import com.sk89q.worldguard.protection.regions.ProtectedRegion
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.World
@@ -26,8 +27,10 @@ object ExternalPlugin {
          * @param location 保護を取得したい[Location]
          * @return 指定された[World]の[Location]に存在するWorldGuardの保護の[Set]。保護がなければ`null`。
          */
-        fun getRegions(world: World, location: Location) =
-            regionManager(world)?.getApplicableRegions(location)?.filterNotNull()?.toSet()
+        fun getRegions(world: World, location: Location): Set<ProtectedRegion>? {
+            Logger.info(world.name, location.formatted())
+            return regionManager(world)?.getApplicableRegions(location)?.regions?.filterNotNull()?.toSet()
+        }
     }
 
     object WorldEdit {
