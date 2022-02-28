@@ -46,10 +46,10 @@ object Commands {
         val executor =
             CommandBuilder.beginConfiguration().refineSender<Player>("Player").execution { context ->
                 val player = context.sender
-                val regions = WorldGuard.getRegions(player.world, player.location) ?: run {
+                val regions = WorldGuard.getRegions(player.world, player.location)
+                val topRegion = regions.firstOrNull() ?: run {
                     return@execution Ok(Effect.MessageEffect("${ChatColor.RED}保護がありません。"))
                 }
-                val topRegion = regions.first()
                 val duplicatedRegions =
                     if (regions.size >= 2) "(${regions.size}): ${regions.joinToString { it.id }}" else "-"
                 val comment = context.args.yetToBeParsed.orEmpty("-") { it.joinToString("\n") }
