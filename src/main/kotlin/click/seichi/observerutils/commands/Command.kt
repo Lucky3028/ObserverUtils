@@ -26,7 +26,8 @@ object Command {
     fun executor() = BranchedExecutor(
         mapOf(
             "rg" to Commands.Region.executor,
-            "fix" to Commands.Fix.executor
+            "fix" to Commands.Fix.executor,
+            "help" to Commands.Help.executor
         ), Commands.Help.executor, Commands.Help.executor
     ).asTabExecutor()
 }
