@@ -85,9 +85,11 @@ task proguard(type: ProGuardTask) {
     libraryjars "${System.getProperty('user.home')}/.gradle/caches/modules-2/files-2.1/com.sk89q.worldguard/worldguard-legacy/${versions.worldguard}/4835055c94f69c8bba9857053828671f5f730308/worldguard-legacy-${versions.worldguard}.jar"
     libraryjars "${System.getProperty('user.home')}/.gradle/caches/modules-2/files-2.1/com.sk89q.worldedit/worldedit-bukkit/${versions.worldedit}/d887cb95f6b2b69ac550ef58091d3724beffb44d/worldedit-bukkit-${versions.worldedit}.jar"
     libraryjars "${System.getProperty('user.home')}/.gradle/caches/modules-2/files-2.1/org.spigotmc/spigot-api/${versions.spigot}/a38cb171545121dc90ca6bcaf5072c4ec9bc9ca6/spigot-api-${versions.spigot}.jar"
-    dontwarn 'kotlinx.coroutines.debug.AgentPremain'
+    dontwarn 'okio.**'
+    dontwarn 'okhttp3.**'
     keep 'class click.seichi.observerutils.redmine.** {*;}'
     keep 'class click.seichi.observerutils.ObserverUtils'
+    keepattributes 'Annotation'
     dontobfuscate
 }
 
