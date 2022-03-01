@@ -1,8 +1,8 @@
 package click.seichi.observerutils.utils
 
 import click.seichi.observerutils.WorldGuardException
-import com.github.michaelbull.result.binding
 import com.github.michaelbull.result.Result
+import com.github.michaelbull.result.binding
 import com.github.michaelbull.result.toResultOr
 import com.sk89q.worldedit.bukkit.WorldEditPlugin
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin

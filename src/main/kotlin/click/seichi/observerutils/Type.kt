@@ -1,7 +1,7 @@
 package click.seichi.observerutils
 
-import com.github.michaelbull.result.Result
 import click.seichi.observerutils.contextualexecutor.Effect
+import com.github.michaelbull.result.Result
 
 typealias EffectOrThrowable = ResultOrThrowable<Effect>
 typealias ResultOrThrowable<T> = Result<T, Throwable>
