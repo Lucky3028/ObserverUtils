@@ -73,3 +73,9 @@ enum class KnownHttpException(override val statusCode: Int, override val error: 
  * @param error 例外メッセージ。通常は[com.github.kittinunf.fuel.core.Response.responseMessage]を指定する。
  */
 data class UnknownHttpException(override val statusCode: Int, override val error: String) : HttpException
+
+enum class WorldGuardException(override val error: String) : Error {
+    SelectionIsNotFound("選択範囲がありません。"),
+    Pos1IsNotFound("1st選択がありません。"),
+    Pos2ndIsNotFound("2nd選択がありません。")
+}

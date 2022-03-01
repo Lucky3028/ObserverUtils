@@ -1,8 +1,5 @@
 package click.seichi.observerutils.commands
 
-import arrow.core.Either
-import arrow.core.getOrElse
-import arrow.core.right
 import click.seichi.observerutils.Config
 import click.seichi.observerutils.contextualexecutor.Effect
 import click.seichi.observerutils.contextualexecutor.asTabExecutor
@@ -16,6 +13,9 @@ import click.seichi.observerutils.utils.ExternalPlugin
 import click.seichi.observerutils.utils.ExternalPlugin.WorldGuard
 import click.seichi.observerutils.utils.formatted
 import click.seichi.observerutils.utils.orEmpty
+import com.github.michaelbull.result.Ok
+import com.github.michaelbull.result.getOrElse
+import com.github.michaelbull.result.mapBoth
 import org.bukkit.ChatColor
 import org.bukkit.entity.Player
 
@@ -26,7 +26,8 @@ object Command {
     fun executor() = BranchedExecutor(
         mapOf(
             "rg" to Commands.Region.executor,
-            "fix" to Commands.Fix.executor
+            "fix" to Commands.Fix.executor,
+            "help" to Commands.Help.executor
         ), Commands.Help.executor, Commands.Help.executor
     ).asTabExecutor()
 }
@@ -45,10 +46,10 @@ object Commands {
         val executor =
             CommandBuilder.beginConfiguration().refineSender<Player>("Player").execution { context ->
                 val player = context.sender
-                val regions = WorldGuard.getRegions(player.world, player.location).getOrElse {
-                    return@execution Either.Right(Effect.MessageEffect("${ChatColor.RED}保護がありません。"))
+                val regions = WorldGuard.getRegions(player.world, player.location)
+                val topRegion = regions.firstOrNull() ?: run {
+                    return@execution Ok(Effect.MessageEffect("${ChatColor.RED}保護がありません。"))
                 }
-                val topRegion = regions.first()
                 val duplicatedRegions =
                     if (regions.size >= 2) "(${regions.size}): ${regions.joinToString { it.id }}" else "-"
                 val comment = context.args.yetToBeParsed.orEmpty("-") { it.joinToString("\n") }
@@ -69,9 +70,9 @@ object Commands {
                 )
                 val response = RedmineClient(Config.REDMINE_API_KEY).postIssue(issue)
 
-                response.fold(
-                    ifRight = { Effect.MessageEffect("${ChatColor.AQUA}Redmineにチケットを発行しました。") },
-                    ifLeft = {
+                Ok(response.mapBoth(
+                    success = { Effect.MessageEffect("${ChatColor.AQUA}Redmineにチケットを発行しました。") },
+                    failure = {
                         Effect.SequentialEffect(
                             Effect.MessageEffect("${ChatColor.RED}Redmineにチケットを発行できませんでした。時間を空けて再度試すか、管理者に連絡してください。"),
                             Effect.LoggerEffect(
@@ -80,7 +81,7 @@ object Commands {
                             )
                         )
                     }
-                ).right()
+                ))
             }.build()
     }
 
@@ -98,7 +99,7 @@ object Commands {
             CommandBuilder.beginConfiguration().refineSender<Player>("Player").execution { context ->
                 val player = context.sender
                 val selection = ExternalPlugin.WorldEdit.getSelections(player).getOrElse {
-                    return@execution Either.Right(Effect.MessageEffect("${ChatColor.RED}範囲が選択されていません。"))
+                    return@execution Ok(Effect.MessageEffect("${ChatColor.RED}範囲が選択されていません。"))
                 }
                 val comment = context.args.yetToBeParsed.orEmpty("-") { it.joinToString("\n") }
                 val description = """
@@ -114,9 +115,9 @@ object Commands {
                 )
                 val response = RedmineClient(Config.REDMINE_API_KEY).postIssue(issue)
 
-                response.fold(
-                    ifRight = { Effect.MessageEffect("${ChatColor.AQUA}Redmineにチケットを発行しました。") },
-                    ifLeft = {
+                Ok(response.mapBoth(
+                    success = { Effect.MessageEffect("${ChatColor.AQUA}Redmineにチケットを発行しました。") },
+                    failure = {
                         Effect.SequentialEffect(
                             Effect.MessageEffect("${ChatColor.RED}Redmineにチケットを発行できませんでした。時間を空けて再度試すか、管理者に連絡してください。"),
                             Effect.LoggerEffect(
@@ -125,7 +126,7 @@ object Commands {
                             )
                         )
                     }
-                ).right()
+                ))
             }.build()
     }
 

@@ -1,10 +1,10 @@
 package click.seichi.observerutils
 
-import arrow.core.Either
+import com.github.michaelbull.result.Result
 import click.seichi.observerutils.contextualexecutor.Effect
 
 typealias EffectOrThrowable = ResultOrThrowable<Effect>
-typealias ResultOrThrowable<T> = Either<Throwable, T>
+typealias ResultOrThrowable<T> = Result<T, Throwable>
 
 typealias EffectOrErr = ResultOrErr<Effect>
-typealias ResultOrErr<T> = Either<Error, T>
+typealias ResultOrErr<T> = Result<T, Error>

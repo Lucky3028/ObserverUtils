@@ -1,6 +1,5 @@
 package click.seichi.observerutils.utils
 
-import arrow.core.Option
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import java.util.*
@@ -21,9 +20,9 @@ fun Collection<UUID>.formatted() =
 
 /**
  * 与えられた[Collection]の先頭のアイテムと残りのアイテムのリストを返す
- * @return 与えられた[Collection]の先頭のアイテムと残りのアイテムの[List]を[Pair]で[arrow.core.Some]に包んで返す。[Collection]が空ならば、[arrow.core.None]を返す。
+ * @return 与えられた[Collection]の先頭のアイテムと残りのアイテムの[List]を[Pair]を返す。[Collection]が空ならば、`null`を返す。
  */
-fun <T> Collection<T>.splitFirst() = Option.catch { this.first() to this.drop(1) }
+fun <T> Collection<T>.splitFirst() = runCatching { this.first() to this.drop(1) }.getOrNull()
 
 /**
  * 与えられた[Collection]が空ならば[default]、空でなければ[formatter]で指定された関数を適用して返す

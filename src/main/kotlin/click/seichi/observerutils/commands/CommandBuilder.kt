@@ -1,14 +1,11 @@
 package click.seichi.observerutils.commands
 
-import arrow.core.Either
-import arrow.core.computations.either
-import arrow.core.flatMap
-import arrow.core.getOrElse
 import click.seichi.observerutils.CommandBuildException
 import click.seichi.observerutils.EffectOrErr
 import click.seichi.observerutils.ResultOrErr
 import click.seichi.observerutils.contextualexecutor.*
 import click.seichi.observerutils.utils.splitFirst
+import com.github.michaelbull.result.*
 import org.bukkit.command.CommandSender
 
 /**
@@ -22,9 +19,9 @@ data class CommandBuilder<CS : CommandSender>(
     var contextualExecution: ScopedContextualExecution<CS>
 ) {
     companion object {
-        private val defaultSenderValidation: SenderTypeValidation<CommandSender> = { Either.Right(it) }
+        private val defaultSenderValidation: SenderTypeValidation<CommandSender> = { Ok(it) }
         private val defaultArgumentsParser: CommandArgumentsParser<CommandSender> = { _, context ->
-            Either.Right(PartiallyParsedArgs(emptyList(), context.args))
+            Ok(PartiallyParsedArgs(emptyList(), context.args))
         }
         private val defaultExecution: ScopedContextualExecution<CommandSender> = { TODO("Not unimplemented!") }
 
@@ -43,12 +40,12 @@ data class CommandBuilder<CS : CommandSender>(
                 remainingArgs: List<String>,
                 reverseAccumulator: List<Any> = emptyList()
             ): ResultOrErr<PartiallyParsedArgs> {
-                val (parserHead, parserTail) = remainingParsers.splitFirst().getOrElse {
-                    return Either.Right(PartiallyParsedArgs(reverseAccumulator.reversed(), remainingArgs))
+                val (parserHead, parserTail) = remainingParsers.splitFirst() ?: run {
+                    return Ok(PartiallyParsedArgs(reverseAccumulator.reversed(), remainingArgs))
                 }
 
-                val (argHead, argTail) = remainingArgs.splitFirst().getOrElse {
-                    return Either.Left(CommandBuildException.MissingArgument())
+                val (argHead, argTail) = remainingArgs.splitFirst() ?: run {
+                    return Err(CommandBuildException.MissingArgument())
                 }
 
                 return parserHead(argHead).flatMap { parsedArg ->
@@ -67,7 +64,7 @@ data class CommandBuilder<CS : CommandSender>(
     inline fun <reified CS1 : CS> refineSender(senderType: String): CommandBuilder<CS1> {
         val newSenderTypeValidation: SenderTypeValidation<CS1> = { sender ->
             senderTypeValidation(sender).flatMap {
-                Either.catch { it as CS1 }.mapLeft { CommandBuildException.FailedToCastSender(senderType) }
+                runCatching { it as CS1 }.mapError { CommandBuildException.FailedToCastSender(senderType) }
             }
         }
 
@@ -75,7 +72,7 @@ data class CommandBuilder<CS : CommandSender>(
     }
 
     fun build() = object : ContextualExecutor {
-        override suspend fun executeWith(context: RawCommandContext): EffectOrErr = either {
+        override fun executeWith(context: RawCommandContext): EffectOrErr = binding {
             val refinedSender = senderTypeValidation(context.sender).bind()
             val parsedArgs = argumentsParser(refinedSender, context).bind()
             val parsedContext = ParsedArgCommandContext(refinedSender, context.command, parsedArgs)

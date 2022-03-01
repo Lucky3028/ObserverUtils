@@ -1,18 +1,17 @@
 package click.seichi.observerutils
 
 import click.seichi.observerutils.commands.Command
-import com.github.shynixn.mccoroutine.SuspendingJavaPlugin
-import com.github.shynixn.mccoroutine.setSuspendingExecutor
+import org.bukkit.plugin.java.JavaPlugin
 
-class ObserverUtils : SuspendingJavaPlugin() {
+class ObserverUtils : JavaPlugin() {
     companion object {
         lateinit var PLUGIN: ObserverUtils
             private set
     }
 
-    override suspend fun onEnableAsync() {
+    override fun onEnable() {
         PLUGIN = this
-        getCommand("obs")!!.setSuspendingExecutor(Command.executor())
+        getCommand("obs").executor = Command.executor()
 
         Config.init()
     }
