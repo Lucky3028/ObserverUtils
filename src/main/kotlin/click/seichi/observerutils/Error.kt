@@ -70,7 +70,7 @@ enum class KnownHttpException(override val statusCode: Int, override val error: 
 /**
  * 予期しない通信エラーを表現する
  * @param statusCode HttpStatusCode
- * @param error 例外メッセージ。通常は[com.github.kittinunf.fuel.core.Response.responseMessage]を指定する。
+ * @param error 例外メッセージ。通常は[okhttp3.Response.message]を指定する。
  */
 data class UnknownHttpException(override val statusCode: Int, override val error: String) : HttpException
 
