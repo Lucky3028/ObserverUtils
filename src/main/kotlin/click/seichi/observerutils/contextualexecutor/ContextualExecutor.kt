@@ -3,12 +3,10 @@ package click.seichi.observerutils.contextualexecutor
 import click.seichi.observerutils.EffectOrErr
 import click.seichi.observerutils.WrappedException
 import com.github.michaelbull.result.mapBoth
-import com.github.michaelbull.result.onFailure
 import org.bukkit.ChatColor
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
 import org.bukkit.command.TabExecutor
-import com.github.michaelbull.result.runCatching
 
 interface ContextualExecutor {
     fun executeWith(context: RawCommandContext): EffectOrErr
@@ -35,19 +33,17 @@ fun ContextualExecutor.asTabExecutor(): TabExecutor = object : TabExecutor {
         args: Array<out String>
     ): Boolean {
         val context = RawCommandContext(sender, ExecutedCommand(command, label), args.toList())
-        runCatching {
-            executeWith(context).mapBoth(
-                success = { it.run(context.sender) },
-                failure = {
-                    if (it is WrappedException) {
-                        Effect.MessageEffect("${ChatColor.RED}不明なエラーが発生しました。管理者に連絡してください。").run(context.sender)
-                        it.printStackTrace()
-                    } else {
-                        Effect.MessageEffect(it.error).run(context.sender)
-                    }
+        executeWith(context).mapBoth(
+            success = { it.run(context.sender) },
+            failure = {
+                if (it is WrappedException) {
+                    Effect.MessageEffect("${ChatColor.RED}不明なエラーが発生しました。管理者に連絡してください。").run(context.sender)
+                    it.printStackTrace()
+                } else {
+                    Effect.MessageEffect(it.error).run(context.sender)
                 }
-            )
-        }.onFailure { it.printStackTrace() }
+            }
+        )
 
         return true
     }
