@@ -36,7 +36,7 @@ sealed interface CommandBuildException : Error {
      * @param expectedSender 例外メッセージ中に本来はどの型でなくてはいけないのかということを挿入する。デフォルトは「(不明)」
      */
     class FailedToCastSender(expectedSender: String = "(不明)") : CommandBuildException {
-        override val error = "予期しない実行者がコマンドを実行しました。$expectedSender のみが実行できます。"
+        override val error = "このコマンドは$expectedSender のみが実行できます。"
     }
 
     /**
