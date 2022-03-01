@@ -1,5 +1,7 @@
 package click.seichi.observerutils.redmine
 
+import com.google.gson.annotations.SerializedName
+
 /**
  * 「新規」ステータスを表現するマジックナンバー。
  */
@@ -33,9 +35,12 @@ class Issue(private val issue: RedmineIssue)
  * （annotationがproguardで消されてしまうので、[com.google.gson.annotations.SerializedName]は使えない）
  */
 class RedmineIssue private constructor(
-    val project_id: Int,
-    val tracker_id: Int,
-    val status_id: Int,
+    @SerializedName("project_id")
+    val projectId: Int,
+    @SerializedName("tracker_id")
+    val trackerId: Int,
+    @SerializedName("status_id")
+    val statusId: Int,
     val subject: String,
     val description: String
 ) {
