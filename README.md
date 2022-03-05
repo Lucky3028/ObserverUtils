@@ -52,12 +52,10 @@
 ### デバッグ手順
 
 1. `git clone`
-2. `chmod +x ./gradlew`
-3. `./gradlew jar`
+1. `chmod +x ./gradlew`
+1. `./gradlew jar`
     * Jarを生成する。生成先は`./build/libs/ObserverUtils-<Ver.>.jar`。
-4. `./gradlew proguard`
-    * `jar`タスクで生成されたJarをminimizeする。生成先は`./build/libs/ObserverUtils-<Ver.>.opt.jar`。
-5. Spigotサーバーのpluginsフォルダに追加し起動する
+1. Spigotサーバーのpluginsフォルダに追加し起動する
 
 ### コーディング規約
 
