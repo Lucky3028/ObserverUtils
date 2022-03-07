@@ -61,6 +61,7 @@ object Commands {
                     |_.保護Owner|${topRegion.owners.uniqueIds.filterNotNull().formatted()}|
                     |_.保護Member|${topRegion.members.uniqueIds.filterNotNull().formatted()}|
                     |_.重複保護|$duplicatedRegions|
+                    |_.報告者ID|${player.name}|
                     |_.報告者コメント|$comment|
                 """.trimIndent()
                 val issue = RedmineIssue(
@@ -106,6 +107,7 @@ object Commands {
                     |_.サーバー|${Config.SERVER_NAME}|
                     |_.ワールド|${player.world.name}|
                     |_.座標|${selection.min.formatted()} -> ${selection.max.formatted()}|
+                    |_.報告者ID|${player.name}|
                     |_.報告者コメント|$comment|
                 """.trimIndent()
                 val issue = RedmineIssue(
