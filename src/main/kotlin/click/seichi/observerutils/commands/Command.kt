@@ -41,10 +41,18 @@ object Commands {
      * * コメントは半角スペースで区切ると改行される。入力しなくてもよい。
      */
     object Region {
-        val help = EchoExecutor("/obs rg <...コメント>", "　　Redmineに不要保護報告チケットを発行する")
+        private val usage = listOf("/obs rg <...コメント>", "　　Redmineに不要保護報告チケットを発行する").toTypedArray()
+
+        val help = EchoExecutor(*usage)
 
         val executor =
-            CommandBuilder.beginConfiguration().refineSender<Player>("Player").execution { context ->
+            CommandBuilder.beginConfiguration().refineSender<Player>("Player").argumentsParsers(
+                listOf(
+                    Parsers.formattedDate(*dateFormatters, failureMessage = "lastquitが適切な形式で入力されていません。"),
+                    Parsers.listedInt(Reason.Region.ids(), "理由が適切な形式で入力されていません。")
+                ),
+                onMissingArguments = usage
+            ).execution { context ->
                 val player = context.sender
                 val regions = WorldGuard.getRegions(player.world, player.location)
                 val topRegion = regions.firstOrNull() ?: run {
