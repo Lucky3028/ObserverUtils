@@ -77,7 +77,7 @@ object Commands {
                     listOf(
                         CustomField.Server to MultipleType(Config.SERVER_NAME),
                         CustomField.World to MultipleType(world),
-                        CustomField.Location to MultipleType(player.location.formatted()),
+                        CustomField.Location to MultipleType("/tp ${player.location.formatted()}"),
                         CustomField.Reason to MultipleType(values = reasons)
                     )
                 )
@@ -132,8 +132,8 @@ object Commands {
                     listOf(
                         CustomField.Server to MultipleType(Config.SERVER_NAME),
                         CustomField.World to MultipleType(world),
-                        CustomField.Location to MultipleType(selection.min.formatted()),
-                        CustomField.Location2 to MultipleType(selection.max.formatted()),
+                        CustomField.Location to MultipleType("/tp ${selection.min.formatted()}"),
+                        CustomField.Location2 to MultipleType("/tp ${selection.max.formatted()}"),
                         CustomField.Content to MultipleType(values = contents)
                     )
                 )
