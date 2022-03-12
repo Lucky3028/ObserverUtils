@@ -104,26 +104,38 @@ object Commands {
      * * コメントは半角スペースで区切ると改行される。入力しなくてもよい。
      */
     object Fix {
-        val help = EchoExecutor("/obs fix <...コメント>", "    Redmineに修繕依頼チケットを発行する")
+        val help = EchoExecutor("/obs fix [修繕内容の番号(コンマ区切り)] <...コメント>", "    Redmineに修繕依頼チケットを発行する")
 
-        val executor =
-            CommandBuilder.beginConfiguration().refineSender<Player>("Player").execution { context ->
+        val executor = CommandBuilder.beginConfiguration().refineSender<Player>("Player")
+            .argumentsParsers(
+                listOf(Parsers.listedInt(Reason.Fix.ids(), "修繕内容が適切な形式で入力されていません。"))
+            ).execution { context ->
                 val player = context.sender
                 val selection = ExternalPlugin.WorldEdit.getSelections(player).getOrElse {
                     return@execution Ok(Effect.MessageEffect("${ChatColor.RED}範囲が選択されていません。"))
                 }
                 val comment = context.args.yetToBeParsed.orEmpty("-") { it.joinToString("\n") }
                 val description = """
-                    |_.サーバー|${Config.SERVER_NAME}|
-                    |_.ワールド|${player.world.name}|
-                    |_.座標|${selection.min.formatted()} -> ${selection.max.formatted()}|
                     |_.報告者ID|${player.name}|
                     |_.報告者コメント|$comment|
                 """.trimIndent()
+                val world = World.fromBukkitWorld(player.world)?.ja ?: run {
+                    return@execution Ok(Effect.MessageEffect("${ChatColor.RED}現在いるワールドでは修繕依頼はできません。"))
+                }
+                val contents = (context.args.parsed[0] as? List<*>)?.let { parsed ->
+                    parsed.filterIsInstance<Int>().map { Reason.Fix.values()[it].description }
+                } ?: throw AssertionError()
                 val issue = RedmineIssue(
                     RedmineTracker.FIX,
                     "${RedmineTracker.FIX.jaName} (${Config.SERVER_NAME} ${player.world.name})",
-                    description
+                    description,
+                    listOf(
+                        CustomField.Server to MultipleType(Config.SERVER_NAME),
+                        CustomField.World to MultipleType(world),
+                        CustomField.Location to MultipleType(selection.min.formatted()),
+                        CustomField.Location2 to MultipleType(selection.max.formatted()),
+                        CustomField.Content to MultipleType(values = contents)
+                    )
                 )
                 val response = RedmineClient(Config.REDMINE_API_KEY).postIssue(issue)
 
