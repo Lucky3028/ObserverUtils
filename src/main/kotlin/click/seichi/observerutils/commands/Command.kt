@@ -44,7 +44,7 @@ object Commands {
      * * コメントは半角スペースで区切ると改行される。入力しなくてもよい。
      */
     object Region {
-        private val usage = listOf("/obs rg <...コメント>", "　　Redmineに不要保護報告チケットを発行する").toTypedArray()
+        private val usage = listOf("/obs rg <...コメント>", "    Redmineに不要保護報告チケットを発行する").toTypedArray()
 
         val help = EchoExecutor(*usage)
 
@@ -109,7 +109,7 @@ object Commands {
      * * コメントは半角スペースで区切ると改行される。入力しなくてもよい。
      */
     object Fix {
-        val help = EchoExecutor("/obs fix <...コメント>", "　　Redmineに修繕依頼チケットを発行する")
+        val help = EchoExecutor("/obs fix <...コメント>", "    Redmineに修繕依頼チケットを発行する")
 
         val executor =
             CommandBuilder.beginConfiguration().refineSender<Player>("Player").execution { context ->
@@ -151,6 +151,6 @@ object Commands {
      * コマンドの一覧と説明を表示する。
      */
     object Help {
-        val executor = TraverseExecutor(Region.help, Fix.help, EchoExecutor("/obs help", "　　コマンドの一覧と説明を表示する"))
+        val executor = TraverseExecutor(Region.help, Fix.help, EchoExecutor("/obs help", "    コマンドの一覧と説明を表示する"))
     }
 }
