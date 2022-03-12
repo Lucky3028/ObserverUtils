@@ -33,7 +33,10 @@ data class CommandBuilder<CS : CommandSender>(
             )
     }
 
-    fun argumentsParsers(parsers: List<SingleArgumentParser>): CommandBuilder<CS> {
+    fun argumentsParsers(
+        parsers: List<SingleArgumentParser>,
+        vararg onMissingArguments: String
+    ): CommandBuilder<CS> {
         val combinedParser: CommandArgumentsParser<CS> = { _, context ->
             fun parse(
                 remainingParsers: List<SingleArgumentParser>,
@@ -45,7 +48,7 @@ data class CommandBuilder<CS : CommandSender>(
                 }
 
                 val (argHead, argTail) = remainingArgs.splitFirst() ?: run {
-                    return Err(CommandBuildException.MissingArgument())
+                    return Err(CommandBuildException.MissingArgument(*onMissingArguments))
                 }
 
                 return parserHead(argHead).flatMap { parsedArg ->
