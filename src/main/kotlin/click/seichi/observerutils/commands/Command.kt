@@ -15,6 +15,7 @@ import com.github.michaelbull.result.getOrElse
 import com.github.michaelbull.result.mapBoth
 import org.bukkit.ChatColor
 import org.bukkit.entity.Player
+import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 /**
@@ -64,15 +65,20 @@ object Commands {
                 val duplicatedRegions =
                     if (regions.size >= 2) "(${regions.size}): ${regions.joinToString { it.id }}" else "-"
                 val comment = context.args.yetToBeParsed.orEmpty("-") { it.joinToString("\n") }
+                val lastQuit = context.args.parsed[0] as? LocalDate ?: throw AssertionError()
                 val description = """
                     |_.保護名|${topRegion.id}|
                     |_.保護Owner|${topRegion.owners.uniqueIds.filterNotNull().formatted()}|
                     |_.保護Member|${topRegion.members.uniqueIds.filterNotNull().formatted()}|
                     |_.重複保護|$duplicatedRegions|
+                    |_.lastquit|$lastQuit|
                     |_.報告者ID|${player.name}|
                     |_.報告者コメント|$comment|
                 """.trimIndent()
                 val world = World.fromBukkitWorld(player.world)?.ja ?: "" // TODO: nullのときはreturn?
+                val reasons = (context.args.parsed[1] as? List<*>)?.let { 
+                        parsed -> parsed.filterIsInstance<Int>().map { Reason.Region.values()[it].description } 
+                }  ?: throw AssertionError()
                 val issue = RedmineIssue(
                     RedmineTracker.REGION,
                     "${RedmineTracker.REGION.jaName} (${Config.SERVER_NAME} ${player.world.name})",
@@ -81,7 +87,7 @@ object Commands {
                         CustomField.Server to MultipleType(Config.SERVER_NAME),
                         CustomField.World to MultipleType(world),
                         CustomField.Location to MultipleType(player.location.formatted()),
-                        CustomField.Reason to MultipleType()
+                        CustomField.Reason to MultipleType(values = reasons)
                     )
                 )
                 val response = RedmineClient(Config.REDMINE_API_KEY).postIssue(issue)
