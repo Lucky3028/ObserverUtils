@@ -8,11 +8,12 @@ import click.seichi.observerutils.contextualexecutor.executors.BranchedExecutor
 import click.seichi.observerutils.contextualexecutor.executors.EchoExecutor
 import click.seichi.observerutils.contextualexecutor.executors.TraverseExecutor
 import click.seichi.observerutils.redmine.*
-import click.seichi.observerutils.utils.*
+import click.seichi.observerutils.utils.ExternalPlugin
 import click.seichi.observerutils.utils.ExternalPlugin.WorldGuard
-import com.github.michaelbull.result.Ok
-import com.github.michaelbull.result.getOrElse
-import com.github.michaelbull.result.mapBoth
+import click.seichi.observerutils.utils.MultipleType
+import click.seichi.observerutils.utils.formatted
+import click.seichi.observerutils.utils.orEmpty
+import com.github.michaelbull.result.*
 import org.bukkit.ChatColor
 import org.bukkit.entity.Player
 import java.time.LocalDate
@@ -90,20 +91,18 @@ object Commands {
                         CustomField.Reason to MultipleType(values = reasons)
                     )
                 )
-                val response = RedmineClient(Config.REDMINE_API_KEY).postIssue(issue)
 
-                Ok(response.mapBoth(
-                    success = { Effect.MessageEffect("${ChatColor.AQUA}Redmineにチケットを発行しました。") },
-                    failure = {
+                RedmineClient(Config.REDMINE_API_KEY).postIssue(issue)
+                    .map { Effect.MessageEffect("${ChatColor.AQUA}Redmineにチケットを発行しました。") }
+                    .recover { (err, json) ->
                         Effect.SequentialEffect(
                             Effect.MessageEffect("${ChatColor.RED}Redmineにチケットを発行できませんでした。時間を空けて再度試すか、管理者に連絡してください。"),
                             Effect.LoggerEffect(
-                                "Redmineにチケットを発行できませんでした。: ${it.first.statusCode}(${it.first.error})",
-                                it.second
+                                "Redmineにチケットを発行できませんでした。: ${err.statusCode}(${err.error})",
+                                json
                             )
                         )
                     }
-                ))
             }.build()
     }
 
