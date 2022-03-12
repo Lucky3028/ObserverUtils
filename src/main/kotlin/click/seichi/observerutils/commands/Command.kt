@@ -137,20 +137,18 @@ object Commands {
                         CustomField.Content to MultipleType(values = contents)
                     )
                 )
-                val response = RedmineClient(Config.REDMINE_API_KEY).postIssue(issue)
 
-                Ok(response.mapBoth(
-                    success = { Effect.MessageEffect("${ChatColor.AQUA}Redmineにチケットを発行しました。") },
-                    failure = {
+                RedmineClient(Config.REDMINE_API_KEY).postIssue(issue)
+                    .map { Effect.MessageEffect("${ChatColor.AQUA}Redmineにチケットを発行しました。") }
+                    .recover { (err, json) ->
                         Effect.SequentialEffect(
                             Effect.MessageEffect("${ChatColor.RED}Redmineにチケットを発行できませんでした。時間を空けて再度試すか、管理者に連絡してください。"),
                             Effect.LoggerEffect(
-                                "Redmineにチケットを発行できませんでした。: ${it.first.statusCode}(${it.first.error})",
-                                it.second
+                                "Redmineにチケットを発行できませんでした。: ${err.statusCode}(${err.error})",
+                                json
                             )
                         )
                     }
-                ))
             }.build()
     }
 
