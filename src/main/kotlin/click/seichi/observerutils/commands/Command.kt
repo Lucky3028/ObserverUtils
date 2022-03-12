@@ -45,9 +45,7 @@ object Commands {
 
         val executor =
             CommandBuilder.beginConfiguration().refineSender<Player>("Player").argumentsParsers(
-                listOf(
-                    Parsers.listedInt(Reason.Region.ids(), "理由が適切な形式で入力されていません。")
-                ),
+                listOf(Parsers.listedInt(Reason.Region.ids(), "理由が適切な形式で入力されていません。")),
                 onMissingArguments = usage
             ).execution { context ->
                 val player = context.sender
