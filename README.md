@@ -52,12 +52,10 @@
 ### デバッグ手順
 
 1. `git clone`
-2. `chmod +x ./gradlew`
-3. `./gradlew jar`
+1. `chmod +x ./gradlew`
+1. `./gradlew jar`
     * Jarを生成する。生成先は`./build/libs/ObserverUtils-<Ver.>.jar`。
-4. `./gradlew proguard`
-    * `jar`タスクで生成されたJarをminimizeする。生成先は`./build/libs/ObserverUtils-<Ver.>.opt.jar`。
-5. Spigotサーバーのpluginsフォルダに追加し起動する
+1. Spigotサーバーのpluginsフォルダに追加し起動する
 
 ### コーディング規約
 
@@ -65,7 +63,7 @@ Kotlin公式コーディング規約[^5]に従う。
 
 #### Nullable
 
-原則使用しない。
+使用してもよいが、`Result`を使用するなどして必要最小限に抑えること。`!!`演算子の使用も必要最小限で。
 
 ### コミット
 
@@ -73,7 +71,8 @@ Kotlin公式コーディング規約[^5]に従う。
 
 ### デプロイ
 
-運営チームによる手動デプロイ。デバッグ環境はなし。
+運営チームによる手動デプロイ。  
+デバッグ環境は整地鯖デバッグサーバーを利用。ただし、デバッグサーバーへのデプロイも手動なので、必要な場合は運営チームに依頼すること。
 
 ## 依存
 
