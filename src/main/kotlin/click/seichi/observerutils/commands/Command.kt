@@ -39,7 +39,7 @@ object Commands {
      * * コメントは半角スペースで区切ると改行される。入力しなくてもよい。
      */
     object Region {
-        private val usage = listOf("/obs rg <...コメント>", "    Redmineに不要保護報告チケットを発行する").toTypedArray()
+        private val usage = listOf("/obs rg <判断理由の番号(コンマ区切り)> [...コメント]", "    Redmineに不要保護報告チケットを発行する").toTypedArray()
 
         val help = EchoExecutor(*usage)
 
