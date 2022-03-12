@@ -4,10 +4,12 @@ import click.seichi.observerutils.HttpException
 import click.seichi.observerutils.KnownHttpException
 import click.seichi.observerutils.ObserverUtils.Companion.HttpClient
 import click.seichi.observerutils.UnknownHttpException
+import click.seichi.observerutils.utils.MultipleType
+import click.seichi.observerutils.utils.MultipleTypeAdapter
 import com.github.michaelbull.result.Err
 import com.github.michaelbull.result.Ok
 import com.github.michaelbull.result.Result
-import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -26,7 +28,8 @@ class RedmineClient(redmineApiKey: String) {
      * @param issue 作成するissueの内容。[RedmineIssue]を指定する。
      */
     fun postIssue(issue: RedmineIssue): Result<Response, Pair<HttpException, String>> {
-        val json = Gson().toJson(Issue(issue))
+        val gson = GsonBuilder().registerTypeAdapter(MultipleType::class.java, MultipleTypeAdapter()).create()
+        val json = gson.toJson(Issue(issue))
         val request = Request.Builder().url(redmineIssueUrl).post(json.toRequestBody("application/json".toMediaType()))
             .addHeader("User-Agent", "curl/7.38.0").build()
         val res = HttpClient.newCall(request).execute().use { it }

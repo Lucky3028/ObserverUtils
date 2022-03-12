@@ -1,5 +1,6 @@
 package click.seichi.observerutils.redmine
 
+import click.seichi.observerutils.utils.MultipleType
 import com.google.gson.annotations.SerializedName
 
 /**
@@ -39,9 +40,20 @@ class RedmineIssue private constructor(
     @SerializedName("status_id")
     val statusId: Int,
     val subject: String,
-    val description: String
+    val description: String,
+    @SerializedName("custom_fields")
+    val customFields: List<RedmineCustomField>
 ) {
     constructor(
-        tracker: RedmineTracker, subject: String, description: String
-    ) : this(ObsProjectId, tracker.id, IssueNewStatusId, subject, description)
+        tracker: RedmineTracker, subject: String, description: String, fields: List<Pair<CustomField, MultipleType<String>>> = emptyList()
+    ) : this(
+        ObsProjectId,
+        tracker.id,
+        IssueNewStatusId,
+        subject,
+        description,
+        fields.map { RedmineCustomField(it.first.id, it.second) }
+    )
 }
+
+class RedmineCustomField(val id: Int, val value: MultipleType<String>)
