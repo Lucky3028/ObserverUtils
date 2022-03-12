@@ -41,11 +41,16 @@ sealed interface CommandBuildException : Error {
 
     /**
      * [click.seichi.observerutils.commands.CommandBuilder.argumentsParser]で引数をパースする際に、実行コマンドに引数が足りないことを表現する
-     * @param missingArg 例外メッセージ中にどの引数が足りないのかを挿入する。デフォルトは「(不明)」
+     * @param messages 表示するメッセージ。
      */
-    class MissingArgument(missingArg: String = "(不明)") : CommandBuildException {
-        override val error = "引数が足りません。: $missingArg"
+    class MissingArgument(vararg messages: String) : CommandBuildException {
+        override val error = messages.joinToString("\n")
     }
+
+    /**
+     * [click.seichi.observerutils.commands.CommandBuilder.argumentsParser]で引数をパースする際に、パーサーがエラーを返してきたことを表現する
+     */
+    class FailedToParseArg(override val error : String) : CommandBuildException
 }
 
 /**
