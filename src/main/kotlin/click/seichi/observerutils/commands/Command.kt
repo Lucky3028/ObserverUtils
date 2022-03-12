@@ -16,8 +16,6 @@ import click.seichi.observerutils.utils.orEmpty
 import com.github.michaelbull.result.*
 import org.bukkit.ChatColor
 import org.bukkit.entity.Player
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
 /**
  * `/obs`コマンドを表現する。サブコマンドで成立している。
@@ -33,11 +31,6 @@ object Command {
 }
 
 object Commands {
-    private val dateFormatters = setOf(
-        "yyyy/MM/dd",
-        "yyyy-MM-dd"
-    ).mapNotNull { DateTimeFormatter.ofPattern(it) }.toTypedArray()
-
     /**
      * Redmineに不要保護報告チケットを発行する。
      *
@@ -53,7 +46,6 @@ object Commands {
         val executor =
             CommandBuilder.beginConfiguration().refineSender<Player>("Player").argumentsParsers(
                 listOf(
-                    Parsers.formattedDate(*dateFormatters, failureMessage = "lastquitが適切な形式で入力されていません。"),
                     Parsers.listedInt(Reason.Region.ids(), "理由が適切な形式で入力されていません。")
                 ),
                 onMissingArguments = usage
@@ -66,20 +58,18 @@ object Commands {
                 val duplicatedRegions =
                     if (regions.size >= 2) "(${regions.size}): ${regions.joinToString { it.id }}" else "-"
                 val comment = context.args.yetToBeParsed.orEmpty("-") { it.joinToString("\n") }
-                val lastQuit = context.args.parsed[0] as? LocalDate ?: throw AssertionError()
                 val description = """
                     |_.保護名|${topRegion.id}|
                     |_.保護Owner|${topRegion.owners.uniqueIds.filterNotNull().formatted()}|
                     |_.保護Member|${topRegion.members.uniqueIds.filterNotNull().formatted()}|
                     |_.重複保護|$duplicatedRegions|
-                    |_.lastquit|$lastQuit|
                     |_.報告者ID|${player.name}|
                     |_.報告者コメント|$comment|
                 """.trimIndent()
                 val world = World.fromBukkitWorld(player.world)?.ja ?: run {
                     return@execution Ok(Effect.MessageEffect("${ChatColor.RED}現在いるワールドでは不要保護報告は不要です。"))
                 }
-                val reasons = (context.args.parsed[1] as? List<*>)?.let { parsed ->
+                val reasons = (context.args.parsed[0] as? List<*>)?.let { parsed ->
                     parsed.filterIsInstance<Int>().map { Reason.Region.values()[it].description }
                 } ?: throw AssertionError()
                 val issue = RedmineIssue(
