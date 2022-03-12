@@ -2,6 +2,7 @@ package click.seichi.observerutils.commands
 
 import click.seichi.observerutils.Config
 import click.seichi.observerutils.contextualexecutor.Effect
+import click.seichi.observerutils.contextualexecutor.Parsers
 import click.seichi.observerutils.contextualexecutor.asTabExecutor
 import click.seichi.observerutils.contextualexecutor.executors.BranchedExecutor
 import click.seichi.observerutils.contextualexecutor.executors.EchoExecutor
@@ -18,6 +19,7 @@ import com.github.michaelbull.result.getOrElse
 import com.github.michaelbull.result.mapBoth
 import org.bukkit.ChatColor
 import org.bukkit.entity.Player
+import java.time.format.DateTimeFormatter
 
 /**
  * `/obs`コマンドを表現する。サブコマンドで成立している。
@@ -33,6 +35,11 @@ object Command {
 }
 
 object Commands {
+    private val dateFormatters = setOf(
+        "yyyy/MM/dd",
+        "yyyy-MM-dd"
+    ).mapNotNull { DateTimeFormatter.ofPattern(it) }.toTypedArray()
+
     /**
      * Redmineに不要保護報告チケットを発行する。
      *
