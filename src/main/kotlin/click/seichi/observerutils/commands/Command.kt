@@ -76,9 +76,9 @@ object Commands {
                     |_.報告者コメント|$comment|
                 """.trimIndent()
                 val world = World.fromBukkitWorld(player.world)?.ja ?: "" // TODO: nullのときはreturn?
-                val reasons = (context.args.parsed[1] as? List<*>)?.let { 
-                        parsed -> parsed.filterIsInstance<Int>().map { Reason.Region.values()[it].description } 
-                }  ?: throw AssertionError()
+                val reasons = (context.args.parsed[1] as? List<*>)?.let { parsed ->
+                    parsed.filterIsInstance<Int>().map { Reason.Region.values()[it].description }
+                } ?: throw AssertionError()
                 val issue = RedmineIssue(
                     RedmineTracker.REGION,
                     "${RedmineTracker.REGION.jaName} (${Config.SERVER_NAME} ${player.world.name})",
