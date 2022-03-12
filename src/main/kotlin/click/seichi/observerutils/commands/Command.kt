@@ -7,13 +7,9 @@ import click.seichi.observerutils.contextualexecutor.asTabExecutor
 import click.seichi.observerutils.contextualexecutor.executors.BranchedExecutor
 import click.seichi.observerutils.contextualexecutor.executors.EchoExecutor
 import click.seichi.observerutils.contextualexecutor.executors.TraverseExecutor
-import click.seichi.observerutils.redmine.RedmineClient
-import click.seichi.observerutils.redmine.RedmineIssue
-import click.seichi.observerutils.redmine.RedmineTracker
-import click.seichi.observerutils.utils.ExternalPlugin
+import click.seichi.observerutils.redmine.*
+import click.seichi.observerutils.utils.*
 import click.seichi.observerutils.utils.ExternalPlugin.WorldGuard
-import click.seichi.observerutils.utils.formatted
-import click.seichi.observerutils.utils.orEmpty
 import com.github.michaelbull.result.Ok
 import com.github.michaelbull.result.getOrElse
 import com.github.michaelbull.result.mapBoth
@@ -69,19 +65,23 @@ object Commands {
                     if (regions.size >= 2) "(${regions.size}): ${regions.joinToString { it.id }}" else "-"
                 val comment = context.args.yetToBeParsed.orEmpty("-") { it.joinToString("\n") }
                 val description = """
-                    |_.サーバー|${Config.SERVER_NAME}|
-                    |_.ワールド|${player.world.name}|
-                    |_.座標|/tp ${player.location.formatted()}|
                     |_.保護名|${topRegion.id}|
                     |_.保護Owner|${topRegion.owners.uniqueIds.filterNotNull().formatted()}|
                     |_.保護Member|${topRegion.members.uniqueIds.filterNotNull().formatted()}|
                     |_.重複保護|$duplicatedRegions|
                     |_.報告者コメント|$comment|
                 """.trimIndent()
+                val world = World.fromBukkitWorld(player.world)?.ja ?: "" // TODO: nullのときはreturn?
                 val issue = RedmineIssue(
                     RedmineTracker.REGION,
                     "${RedmineTracker.REGION.jaName} (${Config.SERVER_NAME} ${player.world.name})",
-                    description
+                    description,
+                    listOf(
+                        CustomField.Server to MultipleType(Config.SERVER_NAME),
+                        CustomField.World to MultipleType(world),
+                        CustomField.Location to MultipleType(player.location.formatted()),
+                        CustomField.Reason to MultipleType()
+                    )
                 )
                 val response = RedmineClient(Config.REDMINE_API_KEY).postIssue(issue)
 
