@@ -76,7 +76,9 @@ object Commands {
                     |_.報告者ID|${player.name}|
                     |_.報告者コメント|$comment|
                 """.trimIndent()
-                val world = World.fromBukkitWorld(player.world)?.ja ?: "" // TODO: nullのときはreturn?
+                val world = World.fromBukkitWorld(player.world)?.ja ?: run {
+                    return@execution Ok(Effect.MessageEffect("${ChatColor.RED}現在いるワールドでは不要保護報告は不要です。"))
+                }
                 val reasons = (context.args.parsed[1] as? List<*>)?.let { parsed ->
                     parsed.filterIsInstance<Int>().map { Reason.Region.values()[it].description }
                 } ?: throw AssertionError()
