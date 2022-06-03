@@ -36,6 +36,7 @@ object ExternalPlugin {
          * @return 指定された[regionName]のWorldGuard保護。存在しなければ`null`。
          */
         fun findRegionByName(world: World, regionName: String) = regionManager(world)?.getRegion(regionName)
+            .toResultOr { WorldGuardException.RegionIsNotFound }
     }
 
     object WorldEdit {
