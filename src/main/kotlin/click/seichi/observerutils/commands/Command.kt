@@ -157,7 +157,7 @@ object Commands {
     }
 
     object Teleport {
-        val help = EchoExecutor("/obs tp [保護名]", "指定した保護にテレポートする")
+        val help = EchoExecutor("/obs tp [保護名]", "    指定した保護にテレポートする")
 
         val executor = CommandBuilder.beginConfiguration().refineSender<Player>("Player")
             .argumentsParsers(listOf(Parsers.singleString("保護名が指定されていません。")))
