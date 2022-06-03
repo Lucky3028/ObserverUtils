@@ -1,16 +1,5 @@
-buildscript {
-    ext.versions = [
-            // Kotlinのバージョン指定はgradle.propertiesに
-            spigot: '1.12.2-R0.1-SNAPSHOT',
-            worldguard: '6.2',
-            worldedit: '6.1'
-    ]
-    repositories {
-        mavenCentral()
-    }
-}
 plugins {
-    id 'org.jetbrains.kotlin.jvm' version "$kotlinVersion"
+    id 'org.jetbrains.kotlin.jvm' version "1.6.21"
 }
 
 group = 'click.seichi'
@@ -38,8 +27,8 @@ configurations {
 }
 
 dependencies {
-    implementation "org.spigotmc:spigot-api:${versions.spigot}"
-    implementation "com.sk89q.worldguard:worldguard-legacy:${versions.worldguard}"
+    implementation "org.spigotmc:spigot-api:1.12.2-R0.1-SNAPSHOT"
+    implementation "com.sk89q.worldguard:worldguard-legacy:6.2"
     implementation "com.sk89q.worldedit:worldedit-bukkit:6.1.5"
     implementation "com.sk89q.worldedit:worldedit-core:6.1"
     embed "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
