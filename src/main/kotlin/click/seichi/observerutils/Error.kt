@@ -84,5 +84,4 @@ enum class WorldGuardException(override val error: String) : Error {
     Pos1IsNotFound("1st選択がありません。"),
     Pos2ndIsNotFound("2nd選択がありません。"),
     RegionIsNotFound("保護がありません。"),
-    LocationIsNotFound("座標が存在しません。")
 }
