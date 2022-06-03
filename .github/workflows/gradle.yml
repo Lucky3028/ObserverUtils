@@ -34,7 +34,7 @@ jobs:
         with:
           arguments: test
       - name: Upload a jar
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: jars
           path: ./build/libs/
