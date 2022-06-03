@@ -1,10 +1,7 @@
 package click.seichi.observerutils.contextualexecutor
 
 import click.seichi.observerutils.CommandBuildException
-import com.github.michaelbull.result.get
-import com.github.michaelbull.result.mapResult
-import com.github.michaelbull.result.runCatching
-import com.github.michaelbull.result.toResultOr
+import com.github.michaelbull.result.*
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -19,5 +16,10 @@ object Parsers {
             parsedList.toIntOrNull()?.takeIf { list.contains(it) }
                 .toResultOr { CommandBuildException.FailedToParseArg(failureMessage) }
         }
+    }
+
+    fun singleString(failureMessage: String): SingleArgumentParser = {
+        if (it.isEmpty()) { Err(CommandBuildException.FailedToParseArg(failureMessage)) }
+        else Ok(it)
     }
 }
