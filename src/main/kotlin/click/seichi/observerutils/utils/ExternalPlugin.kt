@@ -21,10 +21,10 @@ object ExternalPlugin {
         private fun regionManager(world: World) = instance?.regionContainer?.get(world)
 
         /**
-         * 指定された[World]の[Location]に存在するWorldGuardの保護を返す
+         * 指定された[world]の[location]に存在するWorldGuardの保護を返す
          * @param world 保護を取得したい[World]
          * @param location 保護を取得したい[Location]
-         * @return 指定された[World]の[Location]に存在するWorldGuardの保護の[Set]。保護がなければ`null`。
+         * @return 指定された[world]の[location]に存在するWorldGuardの保護の[Set]。保護がなければ`null`。
          */
         fun getRegions(world: World, location: Location) =
             regionManager(world)?.getApplicableRegions(location)?.filterNotNull()?.toSet().orEmpty()
@@ -41,7 +41,7 @@ object ExternalPlugin {
         /**
          * 指定された[Player]がWorldEditで選択している範囲の最小座標と最大座標を[Location]で返す
          * @param p 選択範囲を取得したい[Player]
-         * @return 指定された[Player]がWorldEditで選択している範囲の最小座標と最大座標を示す[Location]を持つ[Selection]。両方選択されていなければ`null`。
+         * @return [p]がWorldEditで選択している範囲の最小座標と最大座標を示す[Location]を持つ[Selection]。両方選択されていなければ`null`。
          */
         fun getSelections(p: Player): Result<Selection, WorldGuardException> = binding {
             val selection = instance?.getSelection(p).toResultOr { WorldGuardException.SelectionIsNotFound }.bind()
