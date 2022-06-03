@@ -15,6 +15,7 @@ import click.seichi.observerutils.utils.formatted
 import click.seichi.observerutils.utils.orEmpty
 import com.github.michaelbull.result.*
 import org.bukkit.ChatColor
+import org.bukkit.Location
 import org.bukkit.entity.Player
 
 /**
@@ -25,6 +26,7 @@ object Command {
         mapOf(
             "rg" to Commands.Region.executor,
             "fix" to Commands.Fix.executor,
+            "tp" to Commands.Teleport.executor,
             "help" to Commands.Help.executor
         ), Commands.Help.executor, Commands.Help.executor
     ).asTabExecutor()
@@ -40,7 +42,7 @@ object Commands {
      * * 不要だと判断した理由が1つ以上指定されていないと実行不可。コンマで区切ると複数指定可能。
      */
     object Region {
-        private val usage = listOf("/obs rg <判断理由の番号(コンマ区切り)> [...コメント]", "    Redmineに不要保護報告チケットを発行する").toTypedArray()
+        private val usage = listOf("/obs rg [判断理由の番号(コンマ区切り)] <...コメント>", "    Redmineに不要保護報告チケットを発行する").toTypedArray()
 
         val help = EchoExecutor(*usage)
 
@@ -154,10 +156,33 @@ object Commands {
             }.build()
     }
 
+    object Teleport {
+        val help = EchoExecutor("/obs tp [保護名]", "指定した保護にテレポートする")
+
+        val executor = CommandBuilder.beginConfiguration().refineSender<Player>("Player").execution { context ->
+            val sender = context.sender
+            val regionName = context.args.yetToBeParsed.firstOrNull() ?: run {
+                return@execution Ok(Effect.MessageEffect("${ChatColor.RED}保護名が指定されていません。"))
+            }
+            val region = WorldGuard.findRegionByName(sender.world, regionName) ?: run {
+                return@execution Ok(Effect.MessageEffect("${ChatColor.RED}指定された保護名の保護は存在しません。"))
+            }
+            val regionLocation = region.maximumPoint
+            val modifiedRegionLocation = Location(sender.world, regionLocation.x, 64.0, regionLocation.z)
+            sender.teleport(modifiedRegionLocation)
+
+            Ok(Effect.MessageEffect(
+                "${ChatColor.AQUA}保護が見つかったためテレポートしました。",
+                "${ChatColor.AQUA}座標: ${modifiedRegionLocation.x} ${modifiedRegionLocation.y} ${modifiedRegionLocation.z}"
+            ))
+        }.build()
+    }
+
     /**
      * コマンドの一覧と説明を表示する。
      */
     object Help {
-        val executor = TraverseExecutor(Region.help, Fix.help, EchoExecutor("/obs help", "    コマンドの一覧と説明を表示する"))
+        val executor = TraverseExecutor(Region.help, Fix.help, Teleport.help,
+            EchoExecutor("/obs help", "    コマンドの一覧と説明を表示する"))
     }
 }
