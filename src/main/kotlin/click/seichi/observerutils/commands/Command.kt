@@ -175,7 +175,7 @@ object Commands {
                             "${ChatColor.AQUA}座標: ${it.x} ${it.y} ${it.z}"
                         )
                     }
-        }.build()
+            }.build()
     }
 
     /**
