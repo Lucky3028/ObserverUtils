@@ -159,22 +159,22 @@ object Commands {
     object Teleport {
         val help = EchoExecutor("/obs tp [保護名]", "指定した保護にテレポートする")
 
-        val executor = CommandBuilder.beginConfiguration().refineSender<Player>("Player").execution { context ->
-            val sender = context.sender
-            val regionName = context.args.yetToBeParsed.firstOrNull() ?: run {
-                return@execution Ok(Effect.MessageEffect("${ChatColor.RED}保護名が指定されていません。"))
-            }
-            val region = WorldGuard.findRegionByName(sender.world, regionName) ?: run {
-                return@execution Ok(Effect.MessageEffect("${ChatColor.RED}指定された保護名の保護は存在しません。"))
-            }
-            val regionLocation = region.maximumPoint
-            val modifiedRegionLocation = Location(sender.world, regionLocation.x, 64.0, regionLocation.z)
-            sender.teleport(modifiedRegionLocation)
+        val executor = CommandBuilder.beginConfiguration().refineSender<Player>("Player")
+            .argumentsParsers(listOf(Parsers.singleString("保護名が指定されていません。")))
+            .execution { context ->
+                val sender = context.sender
 
-            Ok(Effect.MessageEffect(
-                "${ChatColor.AQUA}保護が見つかったためテレポートしました。",
-                "${ChatColor.AQUA}座標: ${modifiedRegionLocation.x} ${modifiedRegionLocation.y} ${modifiedRegionLocation.z}"
-            ))
+                (context.args.parsed[0] as String)
+                    .let { WorldGuard.findRegionByName(sender.world, it) }
+                    .map { it.maximumPoint!! }
+                    .map { Location(sender.world, it.x, 64.0, it.z) }
+                    .onSuccess { sender.teleport(it) }
+                    .map {
+                        Effect.MessageEffect(
+                            "${ChatColor.AQUA}保護が見つかったためテレポートしました。",
+                            "${ChatColor.AQUA}座標: ${it.x} ${it.y} ${it.z}"
+                        )
+                    }
         }.build()
     }
 
