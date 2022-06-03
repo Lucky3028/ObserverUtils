@@ -28,6 +28,14 @@ object ExternalPlugin {
          */
         fun getRegions(world: World, location: Location) =
             regionManager(world)?.getApplicableRegions(location)?.filterNotNull()?.toSet().orEmpty()
+
+        /**
+         * 指定された[world]に存在する保護から指定された[regionName]の保護を探す
+         * @param world 保護を取得したい[World]
+         * @param regionName 取得したい保護の保護名
+         * @return 指定された[regionName]のWorldGuard保護。存在しなければ`null`。
+         */
+        fun findRegionByName(world: World, regionName: String) = regionManager(world)?.getRegion(regionName)
     }
 
     object WorldEdit {
