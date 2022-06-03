@@ -82,5 +82,7 @@ data class UnknownHttpException(override val statusCode: Int, override val error
 enum class WorldGuardException(override val error: String) : Error {
     SelectionIsNotFound("選択範囲がありません。"),
     Pos1IsNotFound("1st選択がありません。"),
-    Pos2ndIsNotFound("2nd選択がありません。")
+    Pos2ndIsNotFound("2nd選択がありません。"),
+    RegionIsNotFound("保護がありません。"),
+    LocationIsNotFound("座標が存在しません。")
 }
