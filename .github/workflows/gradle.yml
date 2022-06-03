@@ -9,6 +9,12 @@ name: Java CI with Gradle
 on:
   push:
     branches: [ main ]
+    paths-ignore:
+      - "LICENSE"
+      - "README.md"
+      - "renovate.json"
+      - ".github/workflows/**.yml"
+      - "!.github/workflows/gradle.yml"
 
 jobs:
   build:
