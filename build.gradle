@@ -1,17 +1,15 @@
 buildscript {
     ext.versions = [
-        // Kotlinのバージョン指定はgradle.propertiesに
-        spigot: '1.12.2-R0.1-SNAPSHOT',
-        worldguard: '6.2',
-        worldedit: '6.1.5'
+            // Kotlinのバージョン指定はgradle.propertiesに
+            spigot: '1.12.2-R0.1-SNAPSHOT',
+            worldguard: '6.2',
+            worldedit: '6.1.5'
     ]
     repositories {
         mavenCentral()
     }
 }
-
 plugins {
-    id 'java'
     id 'org.jetbrains.kotlin.jvm' version "$kotlinVersion"
 }
 
@@ -43,11 +41,22 @@ dependencies {
     implementation "org.spigotmc:spigot-api:${versions.spigot}"
     implementation "com.sk89q.worldguard:worldguard-legacy:${versions.worldguard}"
     implementation "com.sk89q.worldedit:worldedit-bukkit:${versions.worldedit}"
+    embed "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     embed 'com.google.code.gson:gson:2.9.0'
-    embed 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
     embed 'com.squareup.okhttp3:okhttp:4.9.3'
     embed 'com.michael-bull.kotlin-result:kotlin-result:1.1.14'
     testImplementation 'io.kotest:kotest-runner-junit5-jvm:5.1.0'
+}
+
+compileKotlin {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+compileTestKotlin {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
 }
 
 processResources {
@@ -58,17 +67,6 @@ processResources {
         expand props
     }
 }
-compileKotlin {
-    kotlinOptions {
-        jvmTarget = '1.8'
-    }
-}
-compileTestKotlin {
-    kotlinOptions {
-        jvmTarget = '1.8'
-    }
-}
-
 jar {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     from configurations.embed.collect { it.isDirectory() ? it : zipTree(it) }
