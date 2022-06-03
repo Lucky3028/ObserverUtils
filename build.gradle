@@ -40,8 +40,8 @@ configurations {
 dependencies {
     implementation "org.spigotmc:spigot-api:${versions.spigot}"
     implementation "com.sk89q.worldguard:worldguard-legacy:${versions.worldguard}"
-    implementation "com.sk89q.worldedit:worldedit-bukkit:${versions.worldedit}"
-    implementation "com.sk89q.worldedit:worldedit-core:${versions.worldedit}"
+    implementation "com.sk89q.worldedit:worldedit-bukkit:6.1.5"
+    implementation "com.sk89q.worldedit:worldedit-core:6.1"
     embed "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     embed 'com.google.code.gson:gson:2.9.0'
     embed 'com.squareup.okhttp3:okhttp:4.9.3'
