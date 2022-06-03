@@ -1,0 +1,36 @@
+name: Release
+on:
+  workflow_dispatch:
+    inputs:
+      bump_type:
+        description: 'The version type to bump'
+        required: true
+        default: 'minor'
+        type: choice
+        options:
+          - major
+          - minor
+          - patch
+jobs:
+  ci:
+    uses: ./.github/workflows/gradle.yaml
+
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up JDK 8
+        uses: actions/setup-java@v3
+        with:
+          java-version: '8'
+          distribution: 'temurin'
+      - name: Set git config as GHActions
+        uses: Lucky3028/git-as-gha@v1.0.0
+      - name: Bump version
+        env:
+          BUMP_TYPE: ${{ github.event.inputs.versionIncrementType }}
+        run: ./gradlew incrementVersion --versionIncrementType=${{ env.BUMP_TYPE }} --versionIncrementBranch=feat/ci
+      - name: Download artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: artifact
