@@ -3,7 +3,7 @@ buildscript {
             // Kotlinのバージョン指定はgradle.propertiesに
             spigot: '1.12.2-R0.1-SNAPSHOT',
             worldguard: '6.2',
-            worldedit: '6.1.5'
+            worldedit: '6.1'
     ]
     repositories {
         mavenCentral()
@@ -41,6 +41,7 @@ dependencies {
     implementation "org.spigotmc:spigot-api:${versions.spigot}"
     implementation "com.sk89q.worldguard:worldguard-legacy:${versions.worldguard}"
     implementation "com.sk89q.worldedit:worldedit-bukkit:${versions.worldedit}"
+    implementation "com.sk89q.worldedit:worldedit-core:${versions.worldedit}"
     embed "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     embed 'com.google.code.gson:gson:2.9.0'
     embed 'com.squareup.okhttp3:okhttp:4.9.3'
