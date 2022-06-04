@@ -61,3 +61,9 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: artifact
+      - uses: ncipollo/release-action@v1.10.0
+        with:
+          artifacts: "*.jar"
+          body: "**Full Changelog**: https://github.com/GiganticMinecraft/ObserverUtils/compare/v${{ steps.current-ver.outputs.value }}...v${{ steps.new-ver.outputs.value }}"
+          tag: v${{ steps.new-ver.outputs.value }}
+          token: ${{ secrets.GITHUB_TOKEN }}
