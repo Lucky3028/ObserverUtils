@@ -1,7 +1,7 @@
 plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.6.21'
     id 'com.dipien.semantic-version' version '1.0.0'
-    id "com.mooltiverse.oss.nyx" version "1.0.0"
+    id 'com.mooltiverse.oss.nyx' version '1.0.1'
 }
 
 group = 'click.seichi'
