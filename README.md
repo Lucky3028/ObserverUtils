@@ -90,7 +90,7 @@
 1. `git clone`
 1. `./gradlew jar`
     * Jarを生成する。生成先は`./build/libs/ObserverUtils-<Ver.>.jar`。
-1. Spigotサーバーのpluginsフォルダに追加し起動する
+1. 生成されたJarをSpigotサーバーのpluginsフォルダに追加し起動する
 
 ### コーディング規約
 
@@ -102,7 +102,7 @@ Kotlin公式コーディング規約[^5]に従う。
 
 ### コミット
 
-1コミットあたりの情報は最小限としてください。Conventional Commits[^6]を推奨します。
+1コミットあたりの情報は最小限。Conventional Commits[^6]を推奨。
 
 ### デプロイ
 
@@ -120,7 +120,7 @@ Kotlin公式コーディング規約[^5]に従う。
 ### 開発を行う上で必要な依存
 
 * Java 1.8
-* Kotlin 1.6.10
+* Kotlin 1.6.21
 * [サーバー上で作動させる上で必要な依存](#サーバー上で作動させる上で必要な依存)に記述されているもの
 * その他、[build.gradle](./build.gradle)に記述されているもの
 
