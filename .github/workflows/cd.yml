@@ -38,7 +38,7 @@ jobs:
       - name: Bump version
         run: ./gradlew incrementVersion --versionIncrementType=${{ env.BUMP_TYPE }} --versionIncrementBranch=main
         env:
-          BUMP_TYPE: ${{ github.event.inputs.versionIncrementType }}
+          BUMP_TYPE: ${{ github.event.inputs.bump_type }}
       - name: Download artifact
         uses: actions/download-artifact@v3
         with:
