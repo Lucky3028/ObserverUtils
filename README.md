@@ -88,7 +88,6 @@
 ### デバッグ手順
 
 1. `git clone`
-1. `chmod +x ./gradlew`
 1. `./gradlew jar`
     * Jarを生成する。生成先は`./build/libs/ObserverUtils-<Ver.>.jar`。
 1. Spigotサーバーのpluginsフォルダに追加し起動する
