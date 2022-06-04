@@ -27,9 +27,9 @@ jobs:
       - name: Set git config as GHActions
         uses: Lucky3028/git-as-gha@v1.0.0
       - name: Bump version
+        run: ./gradlew incrementVersion --versionIncrementType=${{ env.BUMP_TYPE }} --versionIncrementBranch=main
         env:
           BUMP_TYPE: ${{ github.event.inputs.versionIncrementType }}
-        run: ./gradlew incrementVersion --versionIncrementType=${{ env.BUMP_TYPE }} --versionIncrementBranch=main
       - name: Download artifact
         uses: actions/download-artifact@v3
         with:
