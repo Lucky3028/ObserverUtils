@@ -7,6 +7,7 @@
 
 name: Java CI with Gradle
 on:
+  workflow_call:
   push:
     paths-ignore:
       - "LICENSE"
@@ -36,5 +37,5 @@ jobs:
       - name: Upload a jar
         uses: actions/upload-artifact@v3
         with:
-          name: jars
+          name: artifact
           path: ./build/libs/
