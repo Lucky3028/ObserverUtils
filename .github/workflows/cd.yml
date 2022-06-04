@@ -38,7 +38,7 @@ jobs:
       - name: Output current ver
         id: current-ver
         run: |
-          VER=./gradlew printVersion -Psnapshot=false | grep Version: | sed -e "s/Version: //"
+          VER=$(./gradlew printVersion -Psnapshot=false | grep Version: | sed -e "s/Version: //")
           echo $VER
           echo "::set-output name=value::$VER"
       - name: Bump version
@@ -48,7 +48,7 @@ jobs:
       - name: Output new ver
         id: new-ver
         run: |
-          VER=./gradlew printVersion -Psnapshot=false | grep Version: | sed -e "s/Version: //"
+          VER=$(./gradlew printVersion -Psnapshot=false | grep Version: | sed -e "s/Version: //")
           echo $VER
           echo "::set-output name=value::$VER"
       - name: Commit, add a tag and push the changes
