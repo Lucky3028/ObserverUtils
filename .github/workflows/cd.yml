@@ -21,7 +21,7 @@ jobs:
   build-jar:
     needs:
       - run-on-main-only
-    uses: ./.github/workflows/gradle.yaml
+    uses: ./.github/workflows/gradle.yml
   release:
     runs-on: ubuntu-latest
     needs:
