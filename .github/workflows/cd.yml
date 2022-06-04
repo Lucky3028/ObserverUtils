@@ -21,7 +21,7 @@ jobs:
   release:
     runs-on: ubuntu-latest
     needs:
-      - build-jar
+      - run-on-main-only
     steps:
       - uses: actions/checkout@v3
         with:
