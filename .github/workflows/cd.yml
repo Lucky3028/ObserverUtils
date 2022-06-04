@@ -14,7 +14,6 @@ on:
 jobs:
   ci:
     uses: ./.github/workflows/gradle.yaml
-
   release:
     runs-on: ubuntu-latest
     steps:
