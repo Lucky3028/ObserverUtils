@@ -1,4 +1,4 @@
-name: CI and CD
+name: CI
 on:
   push:
     paths-ignore:
@@ -6,8 +6,7 @@ on:
       - "README.md"
       - "renovate.json"
       - ".github/workflows/**.yml"
-      - "!.github/workflows/ci-and-cd.yml"
-
+      - "!.github/workflows/ci.yml"
 jobs:
   ci:
     name: Build and test
@@ -32,25 +31,3 @@ jobs:
         with:
           name: artifact
           path: ./build/libs/
-  cd:
-    name: Release
-    runs-on: ubuntu-latest
-    if: ${{ github.ref == 'refs/heads/main' }}
-    needs:
-      - ci
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-      - name: Set up JDK
-        uses: actions/setup-java@v3
-        with:
-          # nyxがJava11以上を要求する
-          java-version: '17'
-          distribution: 'temurin'
-      - name: Set git config as GHActions
-        uses: Lucky3028/git-as-gha@v1.0.0
-      - name: Release
-        run: ./gradlew release
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
