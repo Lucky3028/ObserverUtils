@@ -6,5 +6,6 @@ enum class CustomField(val id: Int) {
     Location(13),
     Location2(14),
     Reason(19),
-    Content(20)
+    Content(20),
+    ObserverId(2)
 }

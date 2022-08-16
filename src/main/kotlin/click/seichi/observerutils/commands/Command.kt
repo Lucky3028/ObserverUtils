@@ -64,7 +64,6 @@ object Commands {
                     |_.保護Owner|${topRegion.owners.uniqueIds.filterNotNull().formatted()}|
                     |_.保護Member|${topRegion.members.uniqueIds.filterNotNull().formatted()}|
                     |_.重複保護|$duplicatedRegions|
-                    |_.報告者ID|${player.name}|
                     |_.報告者コメント|$comment|
                 """.trimIndent()
                 val world = World.fromBukkitWorld(player.world)?.ja ?: run {
@@ -81,7 +80,8 @@ object Commands {
                         CustomField.Server to MultipleType(Config.SERVER_NAME),
                         CustomField.World to MultipleType(world),
                         CustomField.Location to MultipleType("/tp ${player.location.formatted()}"),
-                        CustomField.Reason to MultipleType(values = reasons)
+                        CustomField.Reason to MultipleType(values = reasons),
+                        CustomField.ObserverId to MultipleType(player.name)
                     )
                 )
 
