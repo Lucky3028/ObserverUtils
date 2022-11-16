@@ -8,6 +8,7 @@ object Reason {
         OnlyOneBlock("1マスのみである"),
         Elongated("極端に長方形である"),
         TooUnused("活用済みの土地が著しく少ない"),
+        NoOwnersInDot("ドット絵が未完成なのにOwnerがいない"),
         Other("その他");
 
         companion object {
