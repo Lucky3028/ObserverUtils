@@ -9,7 +9,7 @@ enum class World(val worldName: String, val ja: String) {
     SeichiNether("world_SW_nether", "ネザー整地"),
     SeichiEnd("world_SW_the_end", "エンド整地"),
     Build("world_build", "建築専用"),
-    Dot("world_dot", "ドット絵");
+    Dot("world_dot", "ドット絵専用");
 
     companion object {
         fun fromBukkitWorld(world: org.bukkit.World): World? = values().find { it.worldName == world.name }
