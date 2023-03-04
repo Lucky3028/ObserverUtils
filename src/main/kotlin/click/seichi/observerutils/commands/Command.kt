@@ -60,9 +60,9 @@ object Commands {
                     if (regions.size >= 2) "(${regions.size}): ${regions.joinToString { it.id }}" else "-"
                 val comment = context.args.yetToBeParsed.orEmpty("-") { it.joinToString("\n") }
                 val description = """
-                    |_.保護名|@@${topRegion.id}@@|
-                    |_.保護Owner|@@${topRegion.owners.uniqueIds.filterNotNull().formatted()}@@|
-                    |_.保護Member|@@${topRegion.members.uniqueIds.filterNotNull().formatted()}@@|
+                    |_.保護名|${topRegion.id}|
+                    |_.保護Owner|${topRegion.owners.uniqueIds.filterNotNull().formatted()}|
+                    |_.保護Member|${topRegion.members.uniqueIds.filterNotNull().formatted()}|
                     |_.重複保護|$duplicatedRegions|
                     |_.報告者コメント|$comment|
                 """.trimIndent()
