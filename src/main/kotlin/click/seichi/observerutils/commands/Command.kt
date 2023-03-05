@@ -57,7 +57,7 @@ object Commands {
                     return@execution Ok(Effect.MessageEffect("${ChatColor.RED}保護がありません。"))
                 }
                 val duplicatedRegions =
-                    if (regions.size >= 2) "(${regions.size}): ${regions.joinToString { it.id }}" else "-"
+                    if (regions.size >= 2) "(${regions.size}): @@${regions.joinToString { it.id }}@@" else "-"
                 val comment = context.args.yetToBeParsed.orEmpty("-") { it.joinToString("\n") }
                 val description = """
                     |_.保護名|@@${topRegion.id}@@|
