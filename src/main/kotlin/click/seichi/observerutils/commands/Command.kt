@@ -63,7 +63,7 @@ object Commands {
                     |_.保護名|@@${topRegion.id}@@|
                     |_.保護Owner|@@${topRegion.owners.uniqueIds.filterNotNull().formatted()}@@|
                     |_.保護Member|@@${topRegion.members.uniqueIds.filterNotNull().formatted()}@@|
-                    |_.重複保護|$duplicatedRegions|
+                    |_.重複保護|@@$duplicatedRegions@@|
                     |_.報告者コメント|$comment|
                 """.trimIndent()
                 val world = World.fromBukkitWorld(player.world)?.ja ?: run {
