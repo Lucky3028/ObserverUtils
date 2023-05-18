@@ -3,7 +3,10 @@ plugins {
 }
 
 group = 'click.seichi'
-version = '0.6.0'
+version = '1.0.0'
+
+sourceCompatibility = "1.11"
+targetCompatibility = "1.11"
 
 repositories {
     mavenCentral()
@@ -36,17 +39,6 @@ dependencies {
     embed 'com.squareup.okhttp3:okhttp:4.11.0'
     embed 'com.michael-bull.kotlin-result:kotlin-result:1.1.17'
     testImplementation 'io.kotest:kotest-runner-junit5-jvm:5.6.2'
-}
-
-compileKotlin {
-    kotlinOptions {
-        jvmTarget = '1.8'
-    }
-}
-compileTestKotlin {
-    kotlinOptions {
-        jvmTarget = '1.8'
-    }
 }
 
 processResources {
