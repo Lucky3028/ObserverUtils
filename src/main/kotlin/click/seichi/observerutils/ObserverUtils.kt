@@ -14,7 +14,7 @@ class ObserverUtils : JavaPlugin() {
 
     override fun onEnable() {
         PLUGIN = this
-        getCommand("obs").executor = Command.executor()
+        getCommand("obs")?.setExecutor(Command.executor())
 
         Config.init()
         HttpClient = OkHttpClient()

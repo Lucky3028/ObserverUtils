@@ -167,7 +167,7 @@ object Commands {
                 (context.args.parsed[0] as String)
                     .let { WorldGuard.findRegionByName(sender.world, it) }
                     .map { it.maximumPoint!! }
-                    .map { Location(sender.world, it.x, 64.0, it.z) }
+                    .map { ExternalPlugin.WorldEdit.from(sender.world, it).apply { y = 64.0 } }
                     .onSuccess { sender.teleport(it) }
                     .map {
                         Effect.MessageEffect(

@@ -4,7 +4,11 @@ import click.seichi.observerutils.WorldGuardException
 import com.github.michaelbull.result.Result
 import com.github.michaelbull.result.binding
 import com.github.michaelbull.result.toResultOr
+import com.sk89q.worldedit.bukkit.BukkitAdapter
+import com.sk89q.worldedit.bukkit.BukkitWorld
 import com.sk89q.worldedit.bukkit.WorldEditPlugin
+import com.sk89q.worldedit.math.BlockVector3
+import com.sk89q.worldguard.bukkit.BukkitRegionContainer
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin
 import org.bukkit.Bukkit
 import org.bukkit.Location
@@ -16,9 +20,9 @@ import org.bukkit.entity.Player
  */
 object ExternalPlugin {
     object WorldGuard {
-        private val instance = Bukkit.getPluginManager()?.getPlugin("WorldGuard")?.let { it as WorldGuardPlugin }
+        private val instance = Bukkit.getPluginManager().getPlugin("WorldGuard").let { it as WorldGuardPlugin }
 
-        private fun regionManager(world: World) = instance?.regionContainer?.get(world)
+        private fun regionManager(world: World) = BukkitRegionContainer(instance).get(BukkitWorld(world))
 
         /**
          * 指定された[world]の[location]に存在するWorldGuardの保護を返す
@@ -27,7 +31,8 @@ object ExternalPlugin {
          * @return 指定された[world]の[location]に存在するWorldGuardの保護の[Set]。保護がなければ`null`。
          */
         fun getRegions(world: World, location: Location) =
-            regionManager(world)?.getApplicableRegions(location)?.filterNotNull()?.toSet().orEmpty()
+            regionManager(world)?.getApplicableRegions(BlockVector3.at(location.x, location.y, location.z))
+                ?.filterNotNull()?.toSet().orEmpty()
 
         /**
          * 指定された[world]に存在する保護から指定された[regionName]の保護を探す
@@ -40,24 +45,31 @@ object ExternalPlugin {
     }
 
     object WorldEdit {
-        private val instance = Bukkit.getPluginManager()?.getPlugin("WorldEdit")?.let { it as WorldEditPlugin }
+        private val instance = Bukkit.getPluginManager().getPlugin("WorldEdit")?.let { it as WorldEditPlugin }!!
 
         /**
-         * WorldEditの[com.sk89q.worldedit.bukkit.selections.Selection]をラップするdata class。
+         * WorldEditの[org.bukkit.Location]をラップするdata class。
          */
         data class Selection(val min: Location, val max: Location)
 
+        fun from(world: World, vec: BlockVector3) = Location(
+            world, vec.blockX.toDouble(), vec.blockY.toDouble(), vec.blockZ.toDouble()
+        )
+
         /**
-         * 指定された[Player]がWorldEditで選択している範囲の最小座標と最大座標を[Location]で返す
-         * @param p 選択範囲を取得したい[Player]
-         * @return [p]がWorldEditで選択している範囲の最小座標と最大座標を示す[Location]を持つ[Selection]。両方選択されていなければ`null`。
+         * 指定された[Player]がWorldEditで選択している範囲の最小座標と最大座標を[BlockVector3]で返す
+         * @param player 選択範囲を取得したい[Player]
+         * @return [player]がWorldEditで選択している範囲の最小座標と最大座標を示す[BlockVector3]を持つ[Selection]。両方選択されていなければ`null`。
          */
-        fun getSelections(p: Player): Result<Selection, WorldGuardException> = binding {
-            val selection = instance?.getSelection(p).toResultOr { WorldGuardException.SelectionIsNotFound }.bind()
+        fun getSelections(player: Player): Result<Selection, WorldGuardException> = binding {
+            val actor = BukkitAdapter.adapt(player)
+            val session = instance.worldEdit.sessionManager.get(actor)
+            val world = session.selectionWorld.toResultOr { WorldGuardException.SelectionIsNotFound }.bind()
+            val selection = session.getSelection(world)
             val min = selection.minimumPoint.toResultOr { WorldGuardException.Pos1IsNotFound }.bind()
             val max = selection.maximumPoint.toResultOr { WorldGuardException.Pos2ndIsNotFound }.bind()
 
-            Selection(min, max)
+            Selection(from(player.world, min), from(player.world, max))
         }
     }
 }
