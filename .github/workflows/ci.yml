@@ -19,11 +19,11 @@ jobs:
           java-version: '11'
           distribution: 'temurin'
       - name: Build
-        uses: gradle/gradle-build-action@v2
+        uses: gradle/gradle-build-action@v3
         with:
           arguments: jar
       - name: Test
-        uses: gradle/gradle-build-action@v2
+        uses: gradle/gradle-build-action@v3
         with:
           arguments: test
       - name: Upload a jar
