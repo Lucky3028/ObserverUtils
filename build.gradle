@@ -31,14 +31,14 @@ configurations {
 
 dependencies {
     implementation 'org.spigotmc:spigot-api:1.16.5-R0.1-SNAPSHOT'
-    implementation 'com.sk89q.worldguard:worldguard-bukkit:7.0.2'
-    implementation 'com.sk89q.worldedit:worldedit-bukkit:7.2.14'
-    implementation 'com.sk89q.worldedit:worldedit-core:7.2.14'
+    implementation 'com.sk89q.worldguard:worldguard-bukkit:7.0.9'
+    implementation 'com.sk89q.worldedit:worldedit-bukkit:7.2.20'
+    implementation 'com.sk89q.worldedit:worldedit-core:7.2.20'
     embed 'org.jetbrains.kotlin:kotlin-stdlib'
     embed 'com.google.code.gson:gson:2.10.1'
     embed 'com.squareup.okhttp3:okhttp:4.12.0'
-    embed 'com.michael-bull.kotlin-result:kotlin-result:1.1.18'
-    testImplementation 'io.kotest:kotest-runner-junit5-jvm:5.8.0'
+    embed 'com.michael-bull.kotlin-result:kotlin-result:1.1.21'
+    testImplementation 'io.kotest:kotest-runner-junit5-jvm:5.8.1'
 }
 
 processResources {
