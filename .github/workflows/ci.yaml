@@ -16,13 +16,9 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
       - name: Build
-        uses: gradle/actions/setup-gradle@v4
-        with:
-          arguments: jar
+        run: ./gradlew jar
       - name: Test
-        uses: gradle/actions/setup-gradle@v4
-        with:
-          arguments: test
+        run: ./gradlew test
       - name: Upload a jar
         uses: actions/upload-artifact@v4
         with:
