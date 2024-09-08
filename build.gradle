@@ -5,8 +5,10 @@ plugins {
 group = 'click.seichi'
 version = '1.0.0'
 
-sourceCompatibility = "1.11"
-targetCompatibility = "1.11"
+java {
+    sourceCompatibility = "1.17"
+    targetCompatibility = "1.17"
+}
 
 repositories {
     mavenCentral()
