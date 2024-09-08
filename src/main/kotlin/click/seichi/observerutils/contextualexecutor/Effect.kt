@@ -8,7 +8,7 @@ sealed interface Effect {
     object EmptyEffect : Effect
 
     class MessageEffect(private vararg val messages: String) : Effect {
-        override fun run(sender: CommandSender) = sender.sendMessage(messages)
+        override fun run(sender: CommandSender) = sender.sendMessage(*messages)
     }
 
     class LoggerEffect(
