@@ -47,4 +47,4 @@ jobs:
           tag_name: ${{ steps.tag-name.outputs.value }}
           draft: false
           prerelease: true
-          files: artifact-*/*.jar
+          files: artifact/*.jar
