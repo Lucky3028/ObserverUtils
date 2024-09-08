@@ -1,0 +1,50 @@
+name: CD
+on:
+  push:
+    branches:
+      - main
+jobs:
+  output-sha:
+    name: Get SHA value of the latest commit
+    runs-on: ubuntu-latest
+    outputs:
+      sha: ${{ steps.output-sha.outputs.sha }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Outputs the value
+        id: output-sha
+        run: |
+          VALUE=$(git log --format='%h' -n 1)
+          echo "sha=$VALUE" >> $GITHUB_OUTPUT
+          echo $VALUE
+        shell: bash
+  ci:
+    uses: .github/workflows/ci.yaml
+  cd:
+    name: Deploy
+    runs-on: ubuntu-22.04
+    needs:
+      - output-sha
+      - ci
+    # softprops/action-gh-release requires this permisson
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+      - name: Create and push a tag
+        id: tag-name
+        run: |
+          TAG_NAME=sha-${{ needs.output-sha.outputs.sha }}
+          git tag $TAG_NAME
+          git push origin $TAG_NAME
+          echo "value=$TAG_NAME" >> $GITHUB_OUTPUT
+          echo $TAG_NAME
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.tag-name.outputs.value }}
+          draft: false
+          prerelease: true
+          files: artifact-*/*.jar

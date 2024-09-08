@@ -1,12 +1,9 @@
 name: CI
 on:
   push:
-    paths-ignore:
-      - "LICENSE"
-      - "README.md"
-      - "renovate.json"
-      - ".github/workflows/**.yml"
-      - "!.github/workflows/ci.yml"
+    branches-ignore:
+      - main
+  workflow_call:
 jobs:
   ci:
     name: Build and test
