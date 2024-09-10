@@ -51,7 +51,6 @@ class ParsersTest : BehaviorSpec({
 
                     actual.isOk.shouldBeTrue()
                     actual.value.shouldBeInstanceOf<List<String>>()
-
                 }
             }
             When("基準に含まれていないIntが含まれているならば") {
@@ -63,7 +62,6 @@ class ParsersTest : BehaviorSpec({
 
                         actual.isErr.shouldBeTrue()
                         actual.error.shouldBeInstanceOf<CommandBuildException>()
-
                     }
                 }
             }
