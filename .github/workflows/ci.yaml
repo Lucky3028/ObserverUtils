@@ -10,6 +10,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Output SHA
+        uses: benjlevesque/short-sha@599815c
+        id: short-sha
+      - name: Set plugin ver with SHA commit
+        run: |
+          sed -ri "s/^(versionSuffix=).*/\1${SHA}/" gradle.properties || :
+        env:
+          SHA: ${{ steps.short-sha.outputs.sha }}
       - name: Set up JDK
         uses: actions/setup-java@v4
         with:
