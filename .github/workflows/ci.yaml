@@ -32,7 +32,7 @@ jobs:
           name: artifact
           path: ./build/libs/
   test:
-    name: test
+    name: Test
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
