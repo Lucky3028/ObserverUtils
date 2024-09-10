@@ -5,5 +5,11 @@
     "com.sk89q.worldguard:worldguard-bukkit",
     "com.sk89q.worldedit:worldedit-core",
     "com.sk89q.worldedit:worldedit-bukkit"
+  ],
+  "packageRules": [
+    {
+      "matchFileNames": [".github/workflows/**"],
+      "automerge": true
+    }
   ]
 }
