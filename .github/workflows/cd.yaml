@@ -32,7 +32,7 @@ jobs:
         env:
           SHA: ${{ steps.short-sha.outputs.sha }}
       - name: Create release
-        uses: softprops/action-gh-release@599815c8ee942a9616c92bcfb4f947a3b670ab0b
+        uses: softprops/action-gh-release@c062e08bd532815e2082a85e87e3ef29c3e6d191
         with:
           tag_name: ${{ steps.tag-name.outputs.value }}
           draft: false
