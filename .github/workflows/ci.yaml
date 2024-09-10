@@ -5,22 +5,42 @@ on:
       - main
   workflow_call:
 jobs:
-  ci:
-    name: Build and test
-    runs-on: ubuntu-latest
+  build:
+    name: Build
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
+      - name: Output SHA
+        uses: benjlevesque/short-sha@599815c8ee942a9616c92bcfb4f947a3b670ab0b
+        id: short-sha
+      - name: Set plugin ver with SHA commit
+        run: |
+          sed -ri "s/^(versionSuffix=).*/\1${SHA}/" gradle.properties || :
+        env:
+          SHA: ${{ steps.short-sha.outputs.sha }}
       - name: Set up JDK
         uses: actions/setup-java@v4
         with:
-          java-version: '17'
-          distribution: 'temurin'
+          java-version: 17
+          distribution: temurin
+          cache: gradle
       - name: Build
         run: ./gradlew jar
-      - name: Test
-        run: ./gradlew test
       - name: Upload a jar
         uses: actions/upload-artifact@v4
         with:
           name: artifact
           path: ./build/libs/
+  test:
+    name: Test
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: 17
+          distribution: temurin
+          cache: gradle
+      - name: Test
+        run: ./gradlew test
