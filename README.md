@@ -114,14 +114,14 @@ Kotlin公式コーディング規約[^5]に従う。
 
 ### サーバー上で作動させる上で必要な依存
 
-* Spigot 1.12.2
-* WorldGuard 6.2
-* WorldEdit 6.1.5
+* Spigot 1.18.2
+* WorldGuard 7.0
+* WorldEdit 7.2
 
 ### 開発を行う上で必要な依存
 
-* Java 1.8
-* Kotlin 1.6.21
+* Java 17
+* Kotlin 2.0.20
 * [サーバー上で作動させる上で必要な依存](#サーバー上で作動させる上で必要な依存)に記述されているもの
 * その他、[build.gradle](./build.gradle)に記述されているもの
 
