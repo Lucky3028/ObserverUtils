@@ -39,7 +39,7 @@ dependencies {
     embed 'org.jetbrains.kotlin:kotlin-stdlib'
     embed 'com.google.code.gson:gson:2.11.0'
     embed 'com.squareup.okhttp3:okhttp:4.12.0'
-    embed 'com.michael-bull.kotlin-result:kotlin-result:1.1.21'
+    embed 'com.michael-bull.kotlin-result:kotlin-result:2.0.0'
     testImplementation 'io.kotest:kotest-runner-junit5-jvm:5.9.1'
 }
 
