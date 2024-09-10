@@ -90,7 +90,7 @@
 
 1. `git clone`
 1. `./gradlew jar`
-    * Jarを生成する。生成先は`./build/libs/ObserverUtils-<Ver.>.jar`。
+    * Jarを生成する。生成先は`./build/libs/ObserverUtils-<Ver.>.SNAPSHOT.jar`。
 1. 生成されたJarをSpigotサーバーのpluginsフォルダに追加し起動する
 
 ### コーディング規約
