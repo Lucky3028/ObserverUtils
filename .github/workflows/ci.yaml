@@ -15,7 +15,7 @@ jobs:
         id: short-sha
       - name: Set plugin ver with SHA commit
         run: |
-          sed -ri "s/^(versionSuffix=).*/\1${SHA}/" gradle.properties || :
+          sed -ri "s/^(versionSuffix=).*/\1sha-${SHA}/" gradle.properties || :
         env:
           SHA: ${{ steps.short-sha.outputs.sha }}
       - name: Set up JDK
