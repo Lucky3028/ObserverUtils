@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - main
+permissions: {}
 jobs:
   ci:
     uses: GiganticMinecraft/ObserverUtils/.github/workflows/ci.yaml@main

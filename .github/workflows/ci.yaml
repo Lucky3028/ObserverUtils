@@ -4,6 +4,7 @@ on:
     branches-ignore:
       - main
   workflow_call:
+permissions: {}
 jobs:
   build:
     name: Build

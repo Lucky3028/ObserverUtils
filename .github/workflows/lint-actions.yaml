@@ -3,6 +3,7 @@ on:
   push:
     paths:
       - .github/workflows/**
+permissions: {}
 jobs:
   pinact:
     runs-on: ubuntu-22.04
