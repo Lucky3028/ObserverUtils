@@ -4,10 +4,9 @@ runs:
   using: composite
   steps:
     - uses: actions/checkout@v4
-    - name: "Hello World"
+    - name: Output commit SHA
       shell: bash
       run: |
-        echo 'Hello World'
         SHA=$(git show --format='%h' --no-patch)
         echo "value=$SHA" >> "$GITHUB_OUTPUT"
         echo "$SHA"
