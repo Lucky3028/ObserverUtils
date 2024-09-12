@@ -1,0 +1,52 @@
+name: Lint GitHub Actions
+on:
+  push:
+    paths:
+      - .github/workflows/**
+permissions: {}
+jobs:
+  pinact:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 2
+    steps:
+      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+      - name: Install pinact
+        run: |
+          wget "https://github.com/suzuki-shunsuke/pinact/releases/download/v${PINACT_VER}/pinact_linux_amd64.tar.gz"
+          tar -xvf pinact_linux_amd64.tar.gz
+          sudo mv pinact /usr/local/bin
+        env:
+          PINACT_VER: 0.2.1
+      - uses: suzuki-shunsuke/pinact-action@a60b07ee63e41654915780a3297ff9f5f6b6db63 # v0.1.0
+        with:
+          skip_push: true
+  ghalint:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 2
+    steps:
+      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+      - name: Install ghalint
+        run: |
+          wget "https://github.com/suzuki-shunsuke/ghalint/releases/download/v${GHALINT_VER}/ghalint_${GHALINT_VER}_linux_amd64.tar.gz"
+          tar -xvf "ghalint_${GHALINT_VER}_linux_amd64.tar.gz"
+          sudo mv ghalint /usr/local/bin/
+        env:
+          GHALINT_VER: 0.2.12
+      - name: Run ghalint
+        run: |
+          ghalint -c ./.github/ghalint.yaml run
+  actionlint:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 2
+    steps:
+      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+      - name: Install actionlint
+        run: |
+          wget "https://github.com/rhysd/actionlint/releases/download/v${ACTIONLINT_VER}/actionlint_${ACTIONLINT_VER}_linux_amd64.tar.gz"
+          tar -xvf "actionlint_${ACTIONLINT_VER}_linux_amd64.tar.gz"
+          sudo mv actionlint /usr/local/bin/
+        env:
+          ACTIONLINT_VER: 1.7.1
+      - name: Run actionlint
+        run: |
+          actionlint
