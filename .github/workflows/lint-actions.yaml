@@ -17,9 +17,9 @@ jobs:
           sudo mv pinact /usr/local/bin
         env:
           PINACT_VER: 0.2.1
-      - uses: suzuki-shunsuke/pinact-action@a60b07ee63e41654915780a3297ff9f5f6b6db63 # v0.1.0
-        with:
-          skip_push: true
+      - name: Run pinact
+        run: |
+          pinact -c .github/pinact.yaml run
   ghalint:
     runs-on: ubuntu-22.04
     timeout-minutes: 2
