@@ -5,6 +5,7 @@ runs:
   steps:
     - uses: actions/checkout@v4
     - name: "Hello World"
+      shell: bash
       run: |
         echo 'Hello World'
         SHA=$(git show --format='%h' --no-patch)
