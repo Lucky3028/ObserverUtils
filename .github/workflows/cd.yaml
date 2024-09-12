@@ -25,10 +25,10 @@ jobs:
         id: tag-name
         run: |
           TAG_NAME="sha-${SHA}"
-          git tag $TAG_NAME
-          git push origin $TAG_NAME
-          echo "value=$TAG_NAME" >> $GITHUB_OUTPUT
-          echo $TAG_NAME
+          git tag "$TAG_NAME"
+          git push origin "$TAG_NAME"
+          echo "value=$TAG_NAME" >> "$GITHUB_OUTPUT"
+          echo "$TAG_NAME"
         env:
           SHA: ${{ steps.short-sha.outputs.sha }}
       - name: Create release
