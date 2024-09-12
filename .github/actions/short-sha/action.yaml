@@ -1,0 +1,12 @@
+name: output-sha
+description: Outputs Short commit SHA.
+runs:
+  using: composite
+  steps:
+    - uses: actions/checkout@v4
+    - name: "Hello World"
+      run: |
+        echo 'Hello World'
+        SHA=$(git show --format='%h' --no-patch)
+        echo "value=$SHA" >> "$GITHUB_OUTPUT"
+        echo "$SHA"
