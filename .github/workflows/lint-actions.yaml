@@ -34,7 +34,7 @@ jobs:
           GHALINT_VER: 0.2.12
       - name: Run ghalint
         run: |
-          ghalint run
+          ghalint -c ./.github/ghalint.yaml run
   actionlint:
     runs-on: ubuntu-22.04
     timeout-minutes: 2
