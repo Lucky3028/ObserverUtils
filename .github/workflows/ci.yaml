@@ -13,13 +13,13 @@ jobs:
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
       - name: Output SHA
-        uses: benjlevesque/short-sha@599815c8ee942a9616c92bcfb4f947a3b670ab0b # v3.0.0
+        uses: ./.github/actions/short-sha
         id: short-sha
       - name: Set plugin ver with SHA commit
         run: |
           sed -ri "s/^(versionSuffix=).*/\1sha-${SHA}/" gradle.properties || :
         env:
-          SHA: ${{ steps.short-sha.outputs.sha }}
+          SHA: ${{ steps.short-sha.outputs.SHA }}
       - name: Set up JDK
         uses: actions/setup-java@2dfa2011c5b2a0f1489bf9e433881c92c1631f88 # v4.3.0
         with:

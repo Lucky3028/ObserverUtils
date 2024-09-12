@@ -1,0 +1,17 @@
+name: output-sha
+description: Outputs Short commit SHA.
+outputs:
+  SHA:
+    value: ${{ steps.sha.outputs.sha }}
+    description: commit SHA value.
+runs:
+  using: composite
+  steps:
+    - uses: actions/checkout@v4
+    - name: Output commit SHA
+      shell: bash
+      id: sha
+      run: |
+        SHA=$(git show --format='%h' --no-patch)
+        echo "sha=$SHA" >> "$GITHUB_OUTPUT"
+        echo "$SHA"

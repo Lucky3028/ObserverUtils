@@ -1,0 +1,3 @@
+files:
+  - pattern: '^(.*/)*action\\.yaml$'
+  - pattern: '^\.github/workflows/.*\\.yaml$'
