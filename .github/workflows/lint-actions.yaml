@@ -2,7 +2,7 @@ name: Lint GitHub Actions
 on:
   push:
     paths:
-      - .github/workflows/**
+      - .github/**
 permissions: {}
 jobs:
   pinact:
