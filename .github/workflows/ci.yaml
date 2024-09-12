@@ -34,6 +34,7 @@ jobs:
         run: ./gradlew jar
       - name: Generate artifact attestations
         uses: actions/attest-build-provenance@1c608d11d69870c2092266b3f9a6f3abbf17002c # v1.4.3
+        if: github.ref == 'refs/heads/main'
         with:
           subject-path: ./build/libs/*.jar
       - name: Upload a jar
