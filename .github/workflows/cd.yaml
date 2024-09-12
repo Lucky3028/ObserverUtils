@@ -6,6 +6,10 @@ on:
 permissions: {}
 jobs:
   ci:
+    # actions/attest-build-provenance requires these permissions
+    permissions:
+      id-token: write
+      attestations: write
     uses: GiganticMinecraft/ObserverUtils/.github/workflows/ci.yaml@main
   cd:
     name: Release
