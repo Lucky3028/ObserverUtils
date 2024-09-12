@@ -10,6 +10,10 @@ jobs:
     name: Build
     runs-on: ubuntu-22.04
     timeout-minutes: 5
+    # actions/attest-build-provenance requires these permissions
+    permissions:
+      id-token: write
+      attestations: write
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
       - name: Output SHA
@@ -28,6 +32,10 @@ jobs:
           cache: gradle
       - name: Build
         run: ./gradlew jar
+      - name: Generate artifact attestations
+        uses: actions/attest-build-provenance@1c608d11d69870c2092266b3f9a6f3abbf17002c # v1.4.3
+        with:
+          subject-path: ./build/libs/*.jar
       - name: Upload a jar
         uses: actions/upload-artifact@50769540e7f4bd5e21e526ee35c689e35e0d6874 # v4.4.0
         with:
