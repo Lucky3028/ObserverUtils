@@ -7,6 +7,7 @@ permissions: {}
 jobs:
   pinact:
     runs-on: ubuntu-22.04
+    timeout-minutes: 2
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
       - name: Install pinact
@@ -21,6 +22,7 @@ jobs:
           skip_push: false
   ghalint:
     runs-on: ubuntu-22.04
+    timeout-minutes: 2
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
       - name: Install ghalint
@@ -35,6 +37,7 @@ jobs:
           ghalint run
   actionlint:
     runs-on: ubuntu-22.04
+    timeout-minutes: 2
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
       - name: Install actionlint
