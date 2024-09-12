@@ -13,7 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
       - name: Output SHA
-        uses: benjlevesque/short-sha@95aa1081125b46e95966cef05d7ef9b0e7e28557
+        uses: benjlevesque/short-sha@95aa1081125b46e95966cef05d7ef9b0e7e28557 # v3.0.0
         id: short-sha
       - name: Set plugin ver with SHA commit
         run: |
