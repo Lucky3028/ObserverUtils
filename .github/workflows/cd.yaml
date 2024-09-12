@@ -8,7 +8,7 @@ jobs:
   ci:
     uses: GiganticMinecraft/ObserverUtils/.github/workflows/ci.yaml@main
   cd:
-    name: Deploy
+    name: Release
     runs-on: ubuntu-22.04
     needs:
       - ci
