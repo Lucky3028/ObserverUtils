@@ -32,3 +32,17 @@ jobs:
       - name: Run ghalint
         run: |
           ghalint run
+  actionlint:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install actionlint
+        run: |
+          wget "https://github.com/rhysd/actionlint/releases/download/v${ACTIONLINT_VER}/actionlint_${ACTIONLINT_VER}_linux_amd64.tar.gz"
+          tar -xvf actionlint_${ACTIONLINT_VER}_linux_amd64.tar.gz
+          sudo mv actionlint /usr/local/bin/
+        env:
+          ACTIONLINT_VER: 1.7.1
+      - name: Run actionlint
+        run: |
+          actionlint
