@@ -7,7 +7,7 @@ jobs:
   pinact:
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
       - name: Install pinact
         run: |
           wget "https://github.com/suzuki-shunsuke/pinact/releases/download/v${PINACT_VER}/pinact_linux_amd64.tar.gz"
@@ -21,7 +21,7 @@ jobs:
   ghalint:
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
       - name: Install ghalint
         run: |
           wget "https://github.com/suzuki-shunsuke/ghalint/releases/download/v${GHALINT_VER}/ghalint_${GHALINT_VER}_linux_amd64.tar.gz"
@@ -35,7 +35,7 @@ jobs:
   actionlint:
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
       - name: Install actionlint
         run: |
           wget "https://github.com/rhysd/actionlint/releases/download/v${ACTIONLINT_VER}/actionlint_${ACTIONLINT_VER}_linux_amd64.tar.gz"
