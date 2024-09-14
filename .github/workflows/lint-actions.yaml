@@ -43,13 +43,9 @@ jobs:
     timeout-minutes: 2
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
-      - name: Install actionlint
-        run: |
-          wget "https://github.com/rhysd/actionlint/releases/download/v${ACTIONLINT_VER}/actionlint_${ACTIONLINT_VER}_linux_amd64.tar.gz"
-          tar -xvf "actionlint_${ACTIONLINT_VER}_linux_amd64.tar.gz"
-          sudo mv actionlint /usr/local/bin/
-        env:
-          ACTIONLINT_VER: 1.7.1
       - name: Run actionlint
-        run: |
-          actionlint
+        uses: reviewdog/action-actionlint@4f8f9963ca57a41e5fd5b538dd79dbfbd3e0b38a # v1.54.0
+        with:
+          reporter: github-pr-review
+          fail_on_error: true
+
