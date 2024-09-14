@@ -23,7 +23,7 @@ jobs:
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
       - name: Output SHA
-        uses: ./.github/actions/short-sha
+        uses: hudsonm62/short-sha@b5ee0a4109da599fea68b00dcfe5812100ad8d42 # v1.1.0
         id: short-sha
       - name: Download artifacts
         uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
@@ -36,7 +36,7 @@ jobs:
           echo "value=$TAG_NAME" >> "$GITHUB_OUTPUT"
           echo "$TAG_NAME"
         env:
-          SHA: ${{ steps.short-sha.outputs.SHA }}
+          SHA: ${{ steps.short-sha.outputs.sha }}
       - name: Create release
         uses: softprops/action-gh-release@c062e08bd532815e2082a85e87e3ef29c3e6d191 # v2.0.8
         with:
