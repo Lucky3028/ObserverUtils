@@ -13,7 +13,7 @@ jobs:
     uses: GiganticMinecraft/ObserverUtils/.github/workflows/ci.yaml@main
   cd:
     name: Release
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     needs:
       - ci
     # softprops/action-gh-release requires this permisson
